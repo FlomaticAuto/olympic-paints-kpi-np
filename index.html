@@ -181,6 +181,20 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
 .pill.red{background:var(--color-danger-bg);color:var(--color-danger-fg);border-color:var(--color-danger-bd)}
 .pill.amb{background:var(--color-warning-bg);color:var(--color-warning-fg);border-color:var(--color-warning-bd)}
 .pill.neu{background:var(--color-neutral-bg);color:var(--color-neutral-fg);border-color:var(--color-neutral-bd)}
+/* ── MONTH NAVIGATION ────────────────────────────────────── */
+.month-nav{display:flex;align-items:center;gap:10px;margin:18px 0 22px;flex-wrap:wrap}
+.nav-btn{background:var(--color-surface-base);border:1px solid var(--color-border-default);
+  color:var(--color-text-primary);width:36px;height:36px;border-radius:var(--r-md);
+  font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s}
+.nav-btn:hover{background:var(--color-surface-elevated);border-color:var(--color-brand-primary)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.month-label{font-family:var(--font-display);font-size:22px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.04em;color:var(--color-text-primary);
+  min-width:200px;text-align:center}
+.month-select{font-family:var(--font-body);font-size:13px;padding:8px 12px;
+  border-radius:var(--r-md);border:1px solid var(--color-border-default);
+  background:var(--color-surface-base);color:var(--color-text-primary);cursor:pointer}
 /* ── FOOTER ──────────────────────────────────────────────── */
 .page-footer{text-align:center;padding:28px 32px;font-family:var(--font-body);
   font-size:11px;color:var(--color-text-secondary);
@@ -218,13 +232,14 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R7.80M</div>
-    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 20:44</div>
+    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 20:55</div>
   </div>
 </div>
 
 <!-- ── TAB NAV ── -->
 <div class="tab-nav">
   <button class="tab-btn active" data-tab="overview"  onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn"        data-tab="monthly"   onclick="showTab('monthly')">Monthly</button>
   <button class="tab-btn"        data-tab="sales"     onclick="showTab('sales')">Sales</button>
   <button class="tab-btn"        data-tab="pricing"   onclick="showTab('pricing')">Pricing</button>
   <button class="tab-btn"        data-tab="activity"  onclick="showTab('activity')">Activity</button>
@@ -387,6 +402,53 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
           <th style="text-align:right">Value (Incl. VAT)</th>
         </tr></thead>
         <tbody><tr><td style="font-family:var(--font-display);font-weight:700">15225</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KK021</td><td>Kit Kat Group (Pty) Ltd</td><td style="text-align:right">4</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R11,174.10</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15226</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KK021</td><td>Kit Kat Group (Pty) Ltd</td><td style="text-align:right">4</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R3,695.92</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15227</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KK021</td><td>Kit Kat Group (Pty) Ltd</td><td style="text-align:right">4</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R12,705.26</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15237</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KM071</td><td>Inyameko Trading 1605cc</td><td style="text-align:right">1</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R27,370.00</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15240</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KQ009</td><td>Keystone DIY (PTY) LTD</td><td style="text-align:right">24</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R57,922.05</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15243</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KM043</td><td>&mdash;</td><td style="text-align:right">10</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R7,546.65</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15250</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KM155</td><td>Mr Build  LTT (PTY) LTD</td><td style="text-align:right">15</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R28,474.69</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15251</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KD003</td><td>Del Piero Trading CC</td><td style="text-align:right">14</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R56,229.25</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15254</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KV010</td><td>WS Empire (PTY) LTD</td><td style="text-align:right">13</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R12,629.02</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15260</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KG006</td><td>Gulmohur Building Supplies P/L</td><td style="text-align:right">6</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R13,745.00</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15264</td><td>04/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KM155</td><td>Mr Build  LTT (PTY) LTD</td><td style="text-align:right">6</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R8,906.75</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15275</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KG006</td><td>Gulmohur Building Supplies P/L</td><td style="text-align:right">30</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R28,033.40</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15277</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KS019</td><td>S.I.Hardware</td><td style="text-align:right">16</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R34,684.70</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15282</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KB071</td><td>Intshebe Props 216 Pty Ltd</td><td style="text-align:right">14</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R22,784.92</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15284</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KM031</td><td>Mica Hardware - Purple Rain</td><td style="text-align:right">9</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R7,278.70</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15285</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KC012</td><td>Cassims Hardware</td><td style="text-align:right">2</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R36,052.50</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15286</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KS017</td><td>Femac Hyper ta Spaza Hyper</td><td style="text-align:right">37</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R53,019.08</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15287</td><td>05/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KS017</td><td>Femac Hyper ta Spaza Hyper</td><td style="text-align:right">45</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R40,796.79</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15290</td><td>06/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KS017</td><td>Femac Hyper ta Spaza Hyper</td><td style="text-align:right">1</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R1,210.26</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15298</td><td>06/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KI015</td><td>Iskcon Steel</td><td style="text-align:right">14</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R79,295.50</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15299</td><td>06/05/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KI015</td><td>Iskcon Steel</td><td style="text-align:right">14</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R34,889.91</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">14971</td><td>08/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KN024</td><td>Navisha Investments Pty Ltd</td><td style="text-align:right">36</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R30,462.63</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">14999</td><td>10/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KG006</td><td>Gulmohur Building Supplies P/L</td><td style="text-align:right">21</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R35,714.82</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15001</td><td>10/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KN024</td><td>Navisha Investments Pty Ltd</td><td style="text-align:right">9</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R8,710.00</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15034</td><td>15/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KB100</td><td>Builders Direct Depot Pty Ltd</td><td style="text-align:right">28</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R234,784.14</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15090</td><td>20/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KH008</td><td>Honest Electrical & Plumbing</td><td style="text-align:right">9</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R5,861.47</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15091</td><td>20/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KL035</td><td>Lucky Domestic Hardware</td><td style="text-align:right">6</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R8,074.04</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15094</td><td>21/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KT034</td><td>&mdash;</td><td style="text-align:right">41</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R57,936.20</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15146</td><td>23/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KI015</td><td>Iskcon Steel</td><td style="text-align:right">8</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R9,845.96</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15166</td><td>28/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KR003</td><td>&mdash;</td><td style="text-align:right">26</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R47,819.36</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15167</td><td>28/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KM013</td><td>Moollas Hardware & Furniture</td><td style="text-align:right">9</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R7,255.48</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15183</td><td>28/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KB012</td><td>Buy-Rite</td><td style="text-align:right">1</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R3,020.77</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15187</td><td>29/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KB094</td><td>Builders Den Pty Ltd</td><td style="text-align:right">5</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R3,801.33</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15189</td><td>29/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KS011</td><td>Star Glass & Hardware</td><td style="text-align:right">19</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R58,130.62</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15202</td><td>29/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KB110</td><td>Best Build HW Giyani</td><td style="text-align:right">10</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R3,524.77</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15204</td><td>29/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KB071</td><td>Intshebe Props 216 Pty Ltd</td><td style="text-align:right">15</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R34,884.76</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15206</td><td>29/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KL009</td><td>Low Cost Hardware</td><td style="text-align:right">5</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R5,433.80</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">15208</td><td>29/04/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KR008</td><td>Shingwedzi B.M.CC</td><td style="text-align:right">7</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R9,961.69</td></tr><tr><td style="font-family:var(--font-display);font-weight:700">14838</td><td>30/03/2026</td><td style="color:var(--color-text-tertiary);font-size:11px">KS019</td><td>S.I.Hardware</td><td style="text-align:right">2</td><td style="text-align:right;font-family:var(--font-display);font-weight:700">R35,856.14</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── MONTHLY TAB ── -->
+<div id="panel-monthly" class="tab-panel">
+  <div class="sec-h">Monthly KPI Snapshot &mdash; Nikhil Panchal</div>
+  <p style="font-family:var(--font-body);font-size:12px;color:var(--color-text-secondary);margin:-8px 0 6px">
+    Year-on-year comparison for any single calendar month. Target = prior-year same month &times; 1.30 (KPI A).
+  </p>
+
+  <div class="month-nav">
+    <button class="nav-btn" id="monthPrev" onclick="prevMonth()" title="Previous month">&#8592;</button>
+    <div class="month-label" id="monthLabel">&mdash;</div>
+    <button class="nav-btn" id="monthNext" onclick="nextMonth()" title="Next month">&#8594;</button>
+    <select class="month-select" id="monthSelect" onchange="jumpToMonth(this.value)">
+      <option value="2026-5">May 2026</option><option value="2026-4">April 2026</option><option value="2026-3">March 2026</option><option value="2026-2">February 2026</option><option value="2026-1">January 2026</option><option value="2025-12">December 2025</option><option value="2025-11">November 2025</option><option value="2025-10">October 2025</option><option value="2025-9">September 2025</option><option value="2025-8">August 2025</option><option value="2025-7">July 2025</option><option value="2025-6">June 2025</option><option value="2025-5">May 2025</option><option value="2025-4">April 2025</option><option value="2025-3">March 2025</option><option value="2025-2">February 2025</option><option value="2025-1">January 2025</option><option value="2024-12">December 2024</option><option value="2024-11">November 2024</option><option value="2024-10">October 2024</option><option value="2024-9">September 2024</option><option value="2024-8">August 2024</option><option value="2024-7">July 2024</option><option value="2024-6">June 2024</option><option value="2024-5">May 2024</option><option value="2024-4">April 2024</option><option value="2024-3">March 2024</option>
+    </select>
+  </div>
+
+  <div class="kpi-grid" id="monthlyKpis"></div>
+
+  <div class="g2" style="margin-top:18px">
+    <div class="card">
+      <div class="card-title">Last 12 Months Trend</div>
+      <div class="card-sub">Net revenue ending at the selected month &mdash; selected month highlighted</div>
+      <div class="chart-wrap h300"><canvas id="cMonthTrend"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Three-Year Comparison &mdash; Selected Month</div>
+      <div class="card-sub">Same calendar month across the available years</div>
+      <div class="chart-wrap h300"><canvas id="cMonthCompare"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title">Approved Outstanding Orders &mdash; Dated Within Selected Month</div>
+    <div class="card-sub">Filtered from the live PAD outstanding-orders snapshot</div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>Order #</th><th>Date</th><th>Account</th><th>Customer Name</th>
+          <th style="text-align:right">Lines</th>
+          <th style="text-align:right">Value (Incl. VAT)</th>
+        </tr></thead>
+        <tbody id="monthlyOrdersTbody"></tbody>
       </table>
     </div>
   </div>
@@ -563,7 +625,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 1 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 06 May 2026 20:44 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 06 May 2026 20:55 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -741,6 +803,152 @@ new Chart(document.getElementById('cAccCat'),{
     scales:{x:{grid:gridLine,ticks:{callback:v=>'R'+v.toFixed(1)+'M'}},y:{grid:{display:false},ticks:{font:{size:11}}}}
   }
 });
+
+/* ── MONTHLY TAB ── */
+const MR        = {"2024-3": 2447017.95, "2024-4": 2484213.49, "2024-5": 2918267.36, "2024-6": 2424135.23, "2024-7": 3023485.19, "2024-8": 2656397.71, "2024-9": 2157889.7, "2024-10": 3447345.36, "2024-11": 3602069.94, "2024-12": 4555991.22, "2025-1": 1983373.45, "2025-2": 2498659.67, "2025-3": 3824557.95, "2025-4": 4014512.35, "2025-5": 4122196.32, "2025-6": 3975303.56, "2025-7": 4184012.86, "2025-8": 4645692.28, "2025-9": 4709285.84, "2025-10": 4789467.59, "2025-11": 5714497.92, "2025-12": 7992446.38, "2026-1": 4015992.82, "2026-2": 4384388.22, "2026-3": 3441671.0, "2026-4": 5028555.16, "2026-5": 611890.36};
+const AVAIL     = [[2024, 3], [2024, 4], [2024, 5], [2024, 6], [2024, 7], [2024, 8], [2024, 9], [2024, 10], [2024, 11], [2024, 12], [2025, 1], [2025, 2], [2025, 3], [2025, 4], [2025, 5], [2025, 6], [2025, 7], [2025, 8], [2025, 9], [2025, 10], [2025, 11], [2025, 12], [2026, 1], [2026, 2], [2026, 3], [2026, 4], [2026, 5]];
+const MN        = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const MNF       = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const APPROVED  = [{"ordno": "15225", "orddate": "04/05/2026", "accno": "KK021", "customer": "Kit Kat Group (Pty) Ltd", "lines": 4, "total": 11174.1}, {"ordno": "15226", "orddate": "04/05/2026", "accno": "KK021", "customer": "Kit Kat Group (Pty) Ltd", "lines": 4, "total": 3695.92}, {"ordno": "15227", "orddate": "04/05/2026", "accno": "KK021", "customer": "Kit Kat Group (Pty) Ltd", "lines": 4, "total": 12705.26}, {"ordno": "15237", "orddate": "04/05/2026", "accno": "KM071", "customer": "Inyameko Trading 1605cc", "lines": 1, "total": 27370.0}, {"ordno": "15240", "orddate": "04/05/2026", "accno": "KQ009", "customer": "Keystone DIY (PTY) LTD", "lines": 24, "total": 57922.049999999996}, {"ordno": "15243", "orddate": "04/05/2026", "accno": "KM043", "customer": "", "lines": 10, "total": 7546.65}, {"ordno": "15250", "orddate": "04/05/2026", "accno": "KM155", "customer": "Mr Build  LTT (PTY) LTD", "lines": 15, "total": 28474.690000000002}, {"ordno": "15251", "orddate": "04/05/2026", "accno": "KD003", "customer": "Del Piero Trading CC", "lines": 14, "total": 56229.25}, {"ordno": "15254", "orddate": "04/05/2026", "accno": "KV010", "customer": "WS Empire (PTY) LTD", "lines": 13, "total": 12629.019999999999}, {"ordno": "15260", "orddate": "04/05/2026", "accno": "KG006", "customer": "Gulmohur Building Supplies P/L", "lines": 6, "total": 13745.0}, {"ordno": "15264", "orddate": "04/05/2026", "accno": "KM155", "customer": "Mr Build  LTT (PTY) LTD", "lines": 6, "total": 8906.75}, {"ordno": "15275", "orddate": "05/05/2026", "accno": "KG006", "customer": "Gulmohur Building Supplies P/L", "lines": 30, "total": 28033.400000000005}, {"ordno": "15277", "orddate": "05/05/2026", "accno": "KS019", "customer": "S.I.Hardware", "lines": 16, "total": 34684.7}, {"ordno": "15282", "orddate": "05/05/2026", "accno": "KB071", "customer": "Intshebe Props 216 Pty Ltd", "lines": 14, "total": 22784.92}, {"ordno": "15284", "orddate": "05/05/2026", "accno": "KM031", "customer": "Mica Hardware - Purple Rain", "lines": 9, "total": 7278.7}, {"ordno": "15285", "orddate": "05/05/2026", "accno": "KC012", "customer": "Cassims Hardware", "lines": 2, "total": 36052.5}, {"ordno": "15286", "orddate": "05/05/2026", "accno": "KS017", "customer": "Femac Hyper ta Spaza Hyper", "lines": 37, "total": 53019.079999999994}, {"ordno": "15287", "orddate": "05/05/2026", "accno": "KS017", "customer": "Femac Hyper ta Spaza Hyper", "lines": 45, "total": 40796.79}, {"ordno": "15290", "orddate": "06/05/2026", "accno": "KS017", "customer": "Femac Hyper ta Spaza Hyper", "lines": 1, "total": 1210.26}, {"ordno": "15298", "orddate": "06/05/2026", "accno": "KI015", "customer": "Iskcon Steel", "lines": 14, "total": 79295.49999999999}, {"ordno": "15299", "orddate": "06/05/2026", "accno": "KI015", "customer": "Iskcon Steel", "lines": 14, "total": 34889.91}, {"ordno": "14971", "orddate": "08/04/2026", "accno": "KN024", "customer": "Navisha Investments Pty Ltd", "lines": 36, "total": 30462.630000000005}, {"ordno": "14999", "orddate": "10/04/2026", "accno": "KG006", "customer": "Gulmohur Building Supplies P/L", "lines": 21, "total": 35714.82}, {"ordno": "15001", "orddate": "10/04/2026", "accno": "KN024", "customer": "Navisha Investments Pty Ltd", "lines": 9, "total": 8710.0}, {"ordno": "15034", "orddate": "15/04/2026", "accno": "KB100", "customer": "Builders Direct Depot Pty Ltd", "lines": 28, "total": 234784.14}, {"ordno": "15090", "orddate": "20/04/2026", "accno": "KH008", "customer": "Honest Electrical & Plumbing", "lines": 9, "total": 5861.47}, {"ordno": "15091", "orddate": "20/04/2026", "accno": "KL035", "customer": "Lucky Domestic Hardware", "lines": 6, "total": 8074.04}, {"ordno": "15094", "orddate": "21/04/2026", "accno": "KT034", "customer": "", "lines": 41, "total": 57936.200000000004}, {"ordno": "15146", "orddate": "23/04/2026", "accno": "KI015", "customer": "Iskcon Steel", "lines": 8, "total": 9845.96}, {"ordno": "15166", "orddate": "28/04/2026", "accno": "KR003", "customer": "", "lines": 26, "total": 47819.36000000001}, {"ordno": "15167", "orddate": "28/04/2026", "accno": "KM013", "customer": "Moollas Hardware & Furniture", "lines": 9, "total": 7255.48}, {"ordno": "15183", "orddate": "28/04/2026", "accno": "KB012", "customer": "Buy-Rite", "lines": 1, "total": 3020.77}, {"ordno": "15187", "orddate": "29/04/2026", "accno": "KB094", "customer": "Builders Den Pty Ltd", "lines": 5, "total": 3801.33}, {"ordno": "15189", "orddate": "29/04/2026", "accno": "KS011", "customer": "Star Glass & Hardware", "lines": 19, "total": 58130.62}, {"ordno": "15202", "orddate": "29/04/2026", "accno": "KB110", "customer": "Best Build HW Giyani", "lines": 10, "total": 3524.7700000000004}, {"ordno": "15204", "orddate": "29/04/2026", "accno": "KB071", "customer": "Intshebe Props 216 Pty Ltd", "lines": 15, "total": 34884.759999999995}, {"ordno": "15206", "orddate": "29/04/2026", "accno": "KL009", "customer": "Low Cost Hardware", "lines": 5, "total": 5433.8}, {"ordno": "15208", "orddate": "29/04/2026", "accno": "KR008", "customer": "Shingwedzi B.M.CC", "lines": 7, "total": 9961.69}, {"ordno": "14838", "orddate": "30/03/2026", "accno": "KS019", "customer": "S.I.Hardware", "lines": 2, "total": 35856.14}];
+const GROWTH    = 1.3;
+let curY = 2026, curM = 5;
+
+function mrev(y, m){ return MR[y+'-'+m] || 0; }
+function pctStr(v){ return v===null?'—':(v>=0?'+':'')+v.toFixed(1)+'%'; }
+function safePct(num, denom){ return (denom && denom>0) ? (num/denom-1)*100 : null; }
+
+function isAvail(y, m){ return AVAIL.some(a => a[0]===y && a[1]===m); }
+
+function renderMonthly(){
+  const y = curY, m = curM;
+  document.getElementById('monthLabel').textContent = MNF[m-1] + ' ' + y;
+  const sel = document.getElementById('monthSelect');
+  const key = y+'-'+m;
+  for (const opt of sel.options){ if (opt.value===key){ sel.value=key; break; } }
+
+  // Disable nav buttons at the boundaries
+  let prevY=y, prevM=m-1; if (prevM<1){prevM=12;prevY--;}
+  let nextY=y, nextM=m+1; if (nextM>12){nextM=1;nextY++;}
+  document.getElementById('monthPrev').disabled = !isAvail(prevY, prevM);
+  document.getElementById('monthNext').disabled = !isAvail(nextY, nextM);
+
+  // KPIs
+  const cur  = mrev(y, m);
+  const prev = mrev(y-1, m);
+  const tgt  = prev * GROWTH;
+  const yoy  = safePct(cur, prev);
+  const vsT  = safePct(cur, tgt);
+
+  const cmp24 = mrev(y-2, m);
+  const yoy2  = safePct(prev, cmp24);
+
+  const yoyCls = yoy===null?'neu':(yoy>=30?'up':yoy>=0?'warn':'dn');
+  const vsTCls = vsT===null?'neu':(vsT>=0?'up':'dn');
+
+  document.getElementById('monthlyKpis').innerHTML =
+    '<div class="kpi"><div class="kpi-label">'+MN[m-1]+' '+y+' Sales</div>'+
+      '<div class="kpi-value">'+fmtR(cur)+'</div>'+
+      '<div class="kpi-delta neu">Net revenue (excl. VAT)</div></div>'+
+    '<div class="kpi"><div class="kpi-label">'+MN[m-1]+' '+(y-1)+' (Prior Year)</div>'+
+      '<div class="kpi-value">'+fmtR(prev)+'</div>'+
+      '<div class="kpi-delta neu">Same calendar month</div></div>'+
+    '<div class="kpi"><div class="kpi-label">Target ('+MN[m-1]+' '+y+')</div>'+
+      '<div class="kpi-value">'+fmtR(tgt)+'</div>'+
+      '<div class="kpi-delta neu">Prior year &times; 1.30</div></div>'+
+    '<div class="kpi"><div class="kpi-label">YoY Growth</div>'+
+      '<div class="kpi-value '+yoyCls+'">'+pctStr(yoy)+'</div>'+
+      '<div class="kpi-delta '+yoyCls+'">vs '+MN[m-1]+' '+(y-1)+'</div></div>'+
+    '<div class="kpi"><div class="kpi-label">vs Target</div>'+
+      '<div class="kpi-value '+vsTCls+'">'+pctStr(vsT)+'</div>'+
+      '<div class="kpi-delta '+vsTCls+'">'+(cur>=tgt?'▲ Ahead of target':'▼ Behind target')+'</div></div>'+
+    '<div class="kpi"><div class="kpi-label">Prior YoY ('+(y-1)+' vs '+(y-2)+')</div>'+
+      '<div class="kpi-value">'+pctStr(yoy2)+'</div>'+
+      '<div class="kpi-delta neu">For context</div></div>';
+
+  renderTrendChart(y, m);
+  renderCompareChart(y, m);
+  renderMonthlyOrders(y, m);
+}
+
+let _trendChart=null, _cmpChart=null;
+function renderTrendChart(y, m){
+  const labels=[], vals=[];
+  for (let i=11; i>=0; i--){
+    let pm=m-i, py=y;
+    while (pm<1){pm+=12;py--;}
+    labels.push(MN[pm-1]+' '+String(py).slice(2));
+    vals.push(mrev(py, pm));
+  }
+  if (_trendChart) _trendChart.destroy();
+  _lblMap.set('cMonthTrend', {mode:'v-stacked', fmt:v=>fmtR(v), fs:9, dsColors:['#0D0D0B']});
+  _trendChart = new Chart(document.getElementById('cMonthTrend'),{
+    type:'bar',
+    data:{labels, datasets:[{
+      label:'Net Revenue', data:vals,
+      backgroundColor: vals.map((_,i)=> i===11 ? 'rgba(245,196,0,0.95)' : 'rgba(245,196,0,0.35)'),
+      borderRadius:5
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtR(c.parsed.y)}}},
+      scales:{y:{grid:gridLine,ticks:{callback:v=>fmtR(v)}},x:{grid:{display:false}}}
+    }
+  });
+}
+
+function renderCompareChart(y, m){
+  const labels = [String(y-2), String(y-1), String(y)];
+  const vals   = [mrev(y-2,m), mrev(y-1,m), mrev(y,m)];
+  if (_cmpChart) _cmpChart.destroy();
+  _lblMap.set('cMonthCompare', {mode:'v-stacked', fmt:v=>fmtR(v), fs:10, dsColors:['#0D0D0B']});
+  _cmpChart = new Chart(document.getElementById('cMonthCompare'),{
+    type:'bar',
+    data:{labels, datasets:[{
+      label: MN[m-1] + ' Net Revenue', data:vals,
+      backgroundColor:['rgba(26,61,110,0.55)','rgba(26,61,110,0.85)','rgba(245,196,0,0.95)'],
+      borderRadius:5
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtR(c.parsed.y)}}},
+      scales:{y:{grid:gridLine,ticks:{callback:v=>fmtR(v)}},x:{grid:{display:false}}}
+    }
+  });
+}
+
+function renderMonthlyOrders(y, m){
+  // orddate is "DD/MM/YYYY"
+  const tbody = document.getElementById('monthlyOrdersTbody');
+  const filt = APPROVED.filter(o => {
+    const p = o.orddate.split('/');
+    return p.length===3 && parseInt(p[1])===m && parseInt(p[2])===y;
+  });
+  if (!filt.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--color-text-tertiary);padding:18px">No approved orders dated in this month.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filt.map(o =>
+    '<tr><td style="font-family:var(--font-display);font-weight:700">'+o.ordno+'</td>'+
+    '<td>'+o.orddate+'</td>'+
+    '<td style="color:var(--color-text-tertiary);font-size:11px">'+o.accno+'</td>'+
+    '<td>'+(o.customer||'—')+'</td>'+
+    '<td style="text-align:right">'+o.lines+'</td>'+
+    '<td style="text-align:right;font-family:var(--font-display);font-weight:700">R'+o.total.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td></tr>'
+  ).join('');
+}
+
+function prevMonth(){
+  let m=curM-1, y=curY; if (m<1){m=12;y--;}
+  if (isAvail(y,m)){ curY=y; curM=m; renderMonthly(); }
+}
+function nextMonth(){
+  let m=curM+1, y=curY; if (m>12){m=1;y++;}
+  if (isAvail(y,m)){ curY=y; curM=m; renderMonthly(); }
+}
+function jumpToMonth(v){
+  const p=v.split('-'); curY=parseInt(p[0]); curM=parseInt(p[1]); renderMonthly();
+}
+
+// Initial render (deferred so the canvas elements exist)
+if (AVAIL.length){ renderMonthly(); }
 </script>
 </body>
 </html>
