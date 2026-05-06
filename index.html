@@ -181,6 +181,19 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
 .pill.red{background:var(--color-danger-bg);color:var(--color-danger-fg);border-color:var(--color-danger-bd)}
 .pill.amb{background:var(--color-warning-bg);color:var(--color-warning-fg);border-color:var(--color-warning-bd)}
 .pill.neu{background:var(--color-neutral-bg);color:var(--color-neutral-fg);border-color:var(--color-neutral-bd)}
+/* ── QUARTER SELECTOR ────────────────────────────────────── */
+.qnav{display:flex;gap:6px;margin:8px 0 16px;flex-wrap:wrap}
+.qbtn{flex:1;min-width:120px;background:var(--color-surface-base);
+  border:1px solid var(--color-border-default);color:var(--color-text-secondary);
+  padding:12px 14px;border-radius:var(--r-md);cursor:pointer;
+  font-family:var(--font-display);font-size:14px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:2px;
+  transition:all .15s}
+.qbtn:hover{border-color:var(--color-brand-primary);color:var(--color-text-primary)}
+.qbtn.active{background:var(--color-brand-primary);color:var(--color-text-on-brand);
+  border-color:var(--color-brand-primary)}
+.qbtn-sub{font-family:var(--font-body);font-size:10px;font-weight:500;
+  letter-spacing:.04em;opacity:.75;text-transform:uppercase}
 /* ── MONTH NAVIGATION ────────────────────────────────────── */
 .month-nav{display:flex;align-items:center;gap:10px;margin:18px 0 22px;flex-wrap:wrap}
 .nav-btn{background:var(--color-surface-base);border:1px solid var(--color-border-default);
@@ -232,7 +245,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R7.80M</div>
-    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 21:31</div>
+    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 21:46</div>
   </div>
 </div>
 
@@ -344,111 +357,41 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
     </div>
   </div>
 
-  <div class="sec-h">Rep KPI Agreement Scorecard</div>
+  <div class="sec-h">Rep KPI Agreement Scorecard &mdash; 2026</div>
   <div class="card-sub" style="margin:-8px 0 14px;font-family:var(--font-body)">
-    Reporting period: <strong>April 2026</strong> &middot;
-    Sales Rep KPI Agreement 2025 &mdash; 5 weighted categories
-  </div>
-  <div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
-    <div class="kpi">
-      <div class="kpi-label">Period Sales</div>
-      <div class="kpi-value">R5.03M</div>
-      <div class="kpi-delta neu">Net revenue (excl. VAT)</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Monthly Target (PY &times; 1.30)</div>
-      <div class="kpi-value">R5.22M</div>
-      <div class="kpi-delta neu">Prior year same month</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">vs Target</div>
-      <div class="kpi-value dn">-3.6%</div>
-      <div class="kpi-delta dn">Behind target</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">YoY Growth</div>
-      <div class="kpi-value up">+25.3%</div>
-      <div class="kpi-delta up">vs Apr 2025</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Total KPI Score</div>
-      <div class="kpi-value">55.0%</div>
-      <div class="kpi-delta neu">Calculable now: 80% of 100%</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Est. Commission</div>
-      <div class="kpi-value">R6,739</div>
-      <div class="kpi-delta neu">Max @ 100% KPI: R12,252</div>
-    </div>
+    Sales Reps Incentive &amp; KPI Framework &mdash; 6 weighted categories &middot;
+    Commission = (Actual &minus; Baseline &times; 1.10) &times; 4% &times; KPI Score%
   </div>
 
+  <div class="qnav" id="qnav"><button class="qbtn" data-q="Q1" onclick="selectQuarter('Q1')">Q1 <span class="qbtn-sub">Jan–Mar</span></button><button class="qbtn active" data-q="Q2" onclick="selectQuarter('Q2')">Q2 <span class="qbtn-sub">Apr–Jun</span></button><button class="qbtn" data-q="Q3" onclick="selectQuarter('Q3')">Q3 <span class="qbtn-sub">Jul–Sep</span></button><button class="qbtn" data-q="Q4" onclick="selectQuarter('Q4')">Q4 <span class="qbtn-sub">Oct–Dec</span></button></div>
+
+  <div class="kpi-grid" id="qKpis"></div>
+
   <div class="card" style="margin-top:14px">
-    <div class="card-title">Category Detail</div>
-    <div class="card-sub">Status &amp; score earned per KPI category &mdash; April 2026</div>
+    <div class="card-title" id="qDetailTitle">Category Detail</div>
+    <div class="card-sub" id="qDetailSub">Status &amp; score earned per KPI category</div>
     <div class="tw">
       <table>
         <thead><tr>
           <th>KPI</th><th>Status</th><th>Detail</th>
           <th style="text-align:right">Earned / Max</th>
         </tr></thead>
-        <tbody>
-        <tr>
-          <td><strong>A</strong> &mdash; Sales Growth & Collections<br>
-              <span style="color:var(--color-text-tertiary);font-size:11px">50% weight</span></td>
-          <td><span class="pill grn">✓ +25.3% YoY</span></td>
-          <td style="font-size:12px;color:var(--color-text-secondary)">Qualifies — 25.3% above prior year</td>
-          <td style="text-align:right;font-family:var(--font-display);font-weight:700">50.0% / 50%</td>
-        </tr>
-        <tr>
-          <td><strong>B</strong> &mdash; Customer Development & CRM<br>
-              <span style="color:var(--color-text-tertiary);font-size:11px">20% weight</span></td>
-          <td><span class="pill red">✗ 5 / 15 (Q1 2026)</span></td>
-          <td style="font-size:12px;color:var(--color-text-secondary)">Miss — 5 verified vs 15 required (5/month over the quarter)</td>
-          <td style="text-align:right;font-family:var(--font-display);font-weight:700">0.0% / 20%</td>
-        </tr>
-        <tr>
-          <td><strong>C</strong> &mdash; Product Development<br>
-              <span style="color:var(--color-text-tertiary);font-size:11px">10% weight</span></td>
-          <td><span class="pill neu">⚠ No data</span></td>
-          <td style="font-size:12px;color:var(--color-text-secondary)">Awaiting upsell tracking source (focus products, weekly count).</td>
-          <td style="text-align:right;font-family:var(--font-display);font-weight:700">0.0% / 10%</td>
-        </tr>
-        <tr>
-          <td><strong>D</strong> &mdash; New Customer Onboarding<br>
-              <span style="color:var(--color-text-tertiary);font-size:11px">10% weight</span></td>
-          <td><span class="pill amb">⚠ 5 / 6 (Q1 2026)</span></td>
-          <td style="font-size:12px;color:var(--color-text-secondary)">Half credit — 5 new trading customers (avg ≥ 1/month)</td>
-          <td style="text-align:right;font-family:var(--font-display);font-weight:700">5.0% / 10%</td>
-        </tr>
-        <tr>
-          <td><strong>E</strong> &mdash; Training & Merchandising<br>
-              <span style="color:var(--color-text-tertiary);font-size:11px">10% weight</span></td>
-          <td><span class="pill neu">⚠ No data</span></td>
-          <td style="font-size:12px;color:var(--color-text-secondary)">Awaiting training log source (1 training per key account/month).</td>
-          <td style="text-align:right;font-family:var(--font-display);font-weight:700">0.0% / 10%</td>
-        </tr></tbody>
+        <tbody id="qRows"></tbody>
       </table>
     </div>
     <div style="margin-top:14px;padding:12px 14px;background:var(--color-info-bg);
                 border:1px solid var(--color-info-bd);border-radius:var(--r-md);
                 font-size:12px;color:var(--color-info-fg);line-height:1.6">
       <strong style="font-family:var(--font-display);text-transform:uppercase;letter-spacing:.06em;font-size:11px">Data still needed</strong><br>
-      <strong>C (Product Dev):</strong> upsell log keyed to focus products (Natural Elegance, 7-in-1 PVA, Fibre Restore, etc.) per rep per week.<br>
-      <strong>E (Training):</strong> training register per key account &mdash; attendance list / report / photo evidence not currently in any feed.<br>
+      <strong>D (Product Development):</strong> upsell log keyed to focus products (Natural Elegance, 7-in-1 PVA, Fibre Restore, etc.) per rep per week.<br>
+      <strong>F (Training &amp; Merchandising):</strong> training register per key account &mdash; attendance list, training report, photo evidence.<br>
       <strong>Settled-invoice qualifier:</strong> KPI A commission is only payable on invoices settled within 30&ndash;60 days. The collections check is not yet automated &mdash; commission shown above assumes full settlement.
     </div>
   </div>
 
-  <div class="card" style="margin-top:14px">
-    <div class="card-title">Verified New Stores &mdash; Q1 2026</div>
-    <div class="card-sub">Source: <em>New Stores Added By Reps_Quater1_2026.xlsx</em> &mdash; Combined tab; rows where <code>Verify Customer Code</code> matches the rep</div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>Store</th><th>Status</th><th>dlref</th><th>curef</th></tr></thead>
-        <tbody><tr><td>Jamwaria – LTT</td><td>✅ Found</td><td style="color:var(--color-text-tertiary);font-size:11px">KJ038</td><td style="color:var(--color-text-tertiary);font-size:11px">KJ038</td></tr><tr><td>Fix It – Thohoyandou</td><td>✅ Found</td><td style="color:var(--color-text-tertiary);font-size:11px">KF035</td><td style="color:var(--color-text-tertiary);font-size:11px">KF035</td></tr><tr><td>Jabula – Harrismith</td><td>✅ Found</td><td style="color:var(--color-text-tertiary);font-size:11px">KJ039</td><td style="color:var(--color-text-tertiary);font-size:11px">KJ039</td></tr><tr><td>YM BM – Shoshanguve</td><td>✅ Found (as YMBM Enterprise)</td><td style="color:var(--color-text-tertiary);font-size:11px">KS023 / KY007</td><td style="color:var(--color-text-tertiary);font-size:11px">KY007</td></tr><tr><td>Sizabantu Dumo Branch</td><td>❌ Not found</td><td style="color:var(--color-text-tertiary);font-size:11px">KT129</td><td style="color:var(--color-text-tertiary);font-size:11px">KT129</td></tr></tbody>
-      </table>
-    </div>
-  </div>
+  <div class="card" id="qVerified" style="margin-top:14px"></div>
+
+  <script id="qScorecardData" type="application/json">{"Q1": {"label": "Q1 2026", "months": "Jan\u2013Mar 2026", "sales": 11842052.04, "prev": 8306591.07, "markup_pct": 6.88, "markup_lines": 6954, "new_accts": 5, "verified": [{"store": "Jamwaria \u2013 LTT", "status": "\u2705 Found", "dlref": "KJ038", "curef": "KJ038"}, {"store": "Fix It \u2013 Thohoyandou", "status": "\u2705 Found", "dlref": "KF035", "curef": "KF035"}, {"store": "Jabula \u2013 Harrismith", "status": "\u2705 Found", "dlref": "KJ039", "curef": "KJ039"}, {"store": "YM BM \u2013 Shoshanguve", "status": "\u2705 Found (as YMBM Enterprise)", "dlref": "KS023 / KY007", "curef": "KY007"}, {"store": "Sizabantu Dumo Branch", "status": "\u274c Not found", "dlref": "KT129", "curef": "KT129"}], "verified_count": 5}, "Q2": {"label": "Q2 2026", "months": "Apr\u2013Jun 2026", "sales": 5640445.52, "prev": 12112012.23, "markup_pct": 16.42, "markup_lines": 2966, "new_accts": 0, "verified": [], "verified_count": 0}, "Q3": {"label": "Q3 2026", "months": "Jul\u2013Sep 2026", "sales": 0.0, "prev": 13538990.98, "markup_pct": null, "markup_lines": 0, "new_accts": 0, "verified": [], "verified_count": 0}, "Q4": {"label": "Q4 2026", "months": "Oct\u2013Dec 2026", "sales": 0.0, "prev": 18496411.89, "markup_pct": null, "markup_lines": 0, "new_accts": 0, "verified": [], "verified_count": 0}}</script>
 
   <div class="sec-h">Approved Outstanding Orders</div>
   <div class="kpi-grid" style="grid-template-columns:repeat(3,minmax(160px,1fr))">
@@ -702,7 +645,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 1 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 06 May 2026 21:31 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 06 May 2026 21:46 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -1026,6 +969,150 @@ function jumpToMonth(v){
 
 // Initial render (deferred so the canvas elements exist)
 if (AVAIL.length){ renderMonthly(); }
+
+/* ── KPI SCORECARD (QUARTERLY) ── */
+const Q_DATA = JSON.parse(document.getElementById('qScorecardData').textContent);
+let curQ = document.querySelector('.qbtn.active') ? document.querySelector('.qbtn.active').dataset.q : 'Q1';
+
+const RB_BANDS = [
+  // [min markup %, score earned out of 20]
+  [15, 20], [14, 16], [13, 12], [12, 8], [11, 4]
+];
+
+function selectQuarter(q){
+  curQ = q;
+  document.querySelectorAll('.qbtn').forEach(b => b.classList.toggle('active', b.dataset.q === q));
+  renderScorecard();
+}
+
+function _kpiRow(letter, name, weight, pillCls, pillText, status, earned){
+  return '<tr>'
+    + '<td><strong>'+letter+'</strong> &mdash; '+name+'<br>'
+    + '<span style="color:var(--color-text-tertiary);font-size:11px">'+weight+'% weight</span></td>'
+    + '<td><span class="pill '+pillCls+'">'+pillText+'</span></td>'
+    + '<td style="font-size:12px;color:var(--color-text-secondary)">'+status+'</td>'
+    + '<td style="text-align:right;font-family:var(--font-display);font-weight:700">'+earned.toFixed(1)+'% / '+weight+'%</td>'
+    + '</tr>';
+}
+
+function renderScorecard(){
+  const d = Q_DATA[curQ];
+  if (!d){ return; }
+
+  const cur  = d.sales || 0;
+  const prev = d.prev  || 0;
+  const target = prev * 1.30;
+  const baselinePlus10 = prev * 1.10;
+  const yoy = prev > 0 ? (cur/prev - 1) * 100 : null;
+  const vsTarget = target > 0 ? (cur/target - 1) * 100 : null;
+  const growthAbove = Math.max(0, cur - baselinePlus10);
+
+  // ── A. Sales Growth & Collections (30%) ────────────────────────────
+  let aScore=0, aPill=['neu','&mdash;'], aStatus='No prior-year data for comparison.';
+  if (yoy !== null){
+    if (yoy >= 10){
+      aScore = 30; aPill = ['grn','✓ +'+yoy.toFixed(1)+'% YoY'];
+      aStatus = 'Qualifies — '+yoy.toFixed(1)+'% above prior year (R'+ (cur/1e6).toFixed(2) +'M vs R'+ (prev/1e6).toFixed(2) +'M)';
+    } else if (yoy >= 0){
+      aScore = +(yoy/10*30).toFixed(1); aPill = ['amb','⚠ +'+yoy.toFixed(1)+'% YoY'];
+      aStatus = 'Below 10% threshold — partial credit';
+    } else {
+      aScore = 0; aPill = ['red','✗ '+yoy.toFixed(1)+'% YoY'];
+      aStatus = 'Declining vs prior year';
+    }
+  }
+
+  // ── B. Discount Management (20%) — markup vs Rock Bottom ───────────
+  let bScore=0, bPill=['neu','⚠ No data'], bStatus='No invoice lines with rock-bottom prices in this quarter.';
+  if (d.markup_pct !== null && d.markup_lines > 0){
+    const m = d.markup_pct;
+    let earned = 0;
+    for (const [thr, pts] of RB_BANDS){ if (m >= thr){ earned = pts; break; } }
+    bScore = earned;
+    if (earned === 20){ bPill = ['grn','✓ +'+m.toFixed(1)+'% above RB']; bStatus = 'Excellent — '+d.markup_lines.toLocaleString()+' lines averaged +'+m.toFixed(2)+'% above Rock Bottom'; }
+    else if (earned > 0){ bPill = ['amb','⚠ +'+m.toFixed(1)+'% above RB']; bStatus = (earned>=16?'Good':earned>=12?'Fair':earned>=8?'Weak':'Poor')+' — '+d.markup_lines.toLocaleString()+' lines averaged +'+m.toFixed(2)+'% above Rock Bottom'; }
+    else { bPill = ['red','✗ +'+m.toFixed(1)+'% above RB']; bStatus = 'Below +11% — '+d.markup_lines.toLocaleString()+' lines averaged +'+m.toFixed(2)+'% above Rock Bottom'; }
+  }
+
+  // ── C. Customer Dev & CRM (20%) — Hit/Miss; threshold 5/mo = 15/qtr
+  let cScore=0, cPill, cStatus;
+  const vc = d.verified_count;
+  if (vc >= 15){ cScore = 20; cPill = ['grn','✓ '+vc+' verified']; cStatus = 'Hit — '+vc+' new/reactivated stores verified this quarter (threshold 15)'; }
+  else { cScore = 0;  cPill = ['red','✗ '+vc+' / 15']; cStatus = 'Miss — '+vc+' verified vs 15 required (5/month over the quarter)'; }
+
+  // ── D. Product Development (10%) — needs upsell log ────────────────
+  const dScore = 0, dPill = ['neu','⚠ No data'], dStatus = 'Awaiting upsell tracking source (focus products, weekly count).';
+
+  // ── E. New Customer Onboarding (10%) ──────────────────────────────
+  let eScore=0, ePill, eStatus;
+  if (vc >= 6){ eScore = 10; ePill = ['grn','✓ '+vc+' verified']; eStatus = 'Full credit — '+vc+' new trading customers verified this quarter (target 6)'; }
+  else if (vc >= 3){ eScore = 5; ePill = ['amb','⚠ '+vc+' / 6']; eStatus = 'Half credit — '+vc+' new trading customers (avg ≥ 1/month)'; }
+  else { eScore = 0; ePill = ['red','✗ '+vc+' / 6']; eStatus = 'No credit — '+vc+' verified vs 6 required (2/month over the quarter)'; }
+
+  // ── F. Training & Merchandising (10%) — needs training log ─────────
+  const fScore = 0, fPill = ['neu','⚠ No data'], fStatus = 'Awaiting training register per key account (attendance, photos, report).';
+
+  const totalScore = aScore + bScore + cScore + dScore + eScore + fScore;
+  const maxCommission = growthAbove * 0.04;
+  const curCommission = maxCommission * (totalScore / 100);
+
+  // Top KPI strip
+  const yoyStr = yoy === null ? '—' : (yoy>=0?'+':'')+yoy.toFixed(1)+'%';
+  const vsTStr = vsTarget === null ? '—' : (vsTarget>=0?'+':'')+vsTarget.toFixed(1)+'%';
+  const yoyCls = yoy === null ? 'neu' : (yoy>=10?'up':yoy>=0?'warn':'dn');
+  const vsTCls = vsTarget === null ? 'neu' : (vsTarget>=0?'up':'dn');
+
+  document.getElementById('qKpis').innerHTML =
+    '<div class="kpi"><div class="kpi-label">Quarterly Sales</div>'
+      +'<div class="kpi-value">'+fmtR(cur)+'</div>'
+      +'<div class="kpi-delta neu">'+d.months+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Target (Prior &times; 1.30)</div>'
+      +'<div class="kpi-value">'+fmtR(target)+'</div>'
+      +'<div class="kpi-delta neu">Same quarter last year: '+fmtR(prev)+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">vs Target</div>'
+      +'<div class="kpi-value '+vsTCls+'">'+vsTStr+'</div>'
+      +'<div class="kpi-delta '+vsTCls+'">'+(vsTarget!==null?(vsTarget>=0?'Ahead of target':'Behind target'):'—')+'</div></div>'
+    +'<div class="kpi"><div class="kpi-label">YoY Growth</div>'
+      +'<div class="kpi-value '+yoyCls+'">'+yoyStr+'</div>'
+      +'<div class="kpi-delta '+yoyCls+'">vs same quarter prior year</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Total KPI Score</div>'
+      +'<div class="kpi-value">'+totalScore.toFixed(1)+'%</div>'
+      +'<div class="kpi-delta neu">Calculable now: A + B + C + E (max 80%)</div></div>'
+    +'<div class="kpi"><div class="kpi-label">Est. Commission</div>'
+      +'<div class="kpi-value">R'+curCommission.toLocaleString('en-ZA',{maximumFractionDigits:0})+'</div>'
+      +'<div class="kpi-delta neu">Max @ 100% KPI: R'+maxCommission.toLocaleString('en-ZA',{maximumFractionDigits:0})+'</div></div>';
+
+  // Detail rows
+  document.getElementById('qDetailTitle').textContent = 'Category Detail — ' + d.label;
+  document.getElementById('qDetailSub').textContent = 'Status & score earned per KPI category — ' + d.months;
+  document.getElementById('qRows').innerHTML =
+      _kpiRow('A', 'Sales Growth & Collections',  30, aPill[0], aPill[1], aStatus, aScore)
+    + _kpiRow('B', 'Discount Management',          20, bPill[0], bPill[1], bStatus, bScore)
+    + _kpiRow('C', 'Customer Development & CRM',   20, cPill[0], cPill[1], cStatus, cScore)
+    + _kpiRow('D', 'Product Development',          10, dPill[0], dPill[1], dStatus, dScore)
+    + _kpiRow('E', 'New Customer Onboarding',      10, ePill[0], ePill[1], eStatus, eScore)
+    + _kpiRow('F', 'Training & Merchandising',     10, fPill[0], fPill[1], fStatus, fScore);
+
+  // Verified-stores card
+  let vHtml = '<div class="card-title">Verified New Stores — '+d.label+'</div>'
+    + '<div class="card-sub">Source: <em>New Stores Added By Reps_Quater'+d.label.replace(/Q(\d).*/, '$1')+'_'+d.label.split(' ')[1]+'.xlsx</em> — Combined tab</div>';
+  if (vc > 0){
+    vHtml += '<div class="tw"><table><thead><tr><th>Store</th><th>Status</th><th>dlref</th><th>curef</th></tr></thead><tbody>'
+      + d.verified.map(s =>
+          '<tr><td>'+(s.store||'—')+'</td><td>'+(s.status||'—')+'</td>'
+          +'<td style="color:var(--color-text-tertiary);font-size:11px">'+(s.dlref||'—')+'</td>'
+          +'<td style="color:var(--color-text-tertiary);font-size:11px">'+(s.curef||'—')+'</td></tr>'
+        ).join('')
+      + '</tbody></table></div>';
+  } else {
+    vHtml += '<p style="font-family:var(--font-body);font-size:13px;margin-top:14px;padding:12px;'
+      + 'background:var(--color-warning-bg);border:1px solid var(--color-warning-bd);border-radius:var(--r-md);'
+      + 'color:var(--color-warning-fg)">No verified new stores for this quarter — KPI C and KPI E score 0%.</p>';
+  }
+  document.getElementById('qVerified').innerHTML = vHtml;
+}
+
+renderScorecard();
 </script>
 </body>
 </html>
