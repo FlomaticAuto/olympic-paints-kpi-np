@@ -218,7 +218,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R7.80M</div>
-    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 12:31</div>
+    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 12:43</div>
   </div>
 </div>
 
@@ -404,7 +404,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 1 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 06 May 2026 12:31 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 06 May 2026 12:43 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -434,7 +434,68 @@ Chart.defaults.color='#949390';
 const gridLine={color:'rgba(255,255,255,0.06)'};
 const fmtR=v=>v>=1e6?'R'+(v/1e6).toFixed(1)+'M':v>=1e3?'R'+(v/1e3).toFixed(0)+'K':'R'+v;
 
+/* ── BAR LABEL PLUGIN ── */
+const _lblMap=new Map();
+Chart.register({
+  id:'barLabels',
+  afterDraw(chart){
+    const opts=_lblMap.get(chart.canvas&&chart.canvas.id);
+    if(!opts)return;
+    const {ctx}=chart;
+    const mode=opts.mode||'v-top';
+    const fnt='bold '+(opts.fs||10)+"px 'Barlow',sans-serif";
+    try{
+      chart.data.datasets.forEach((ds,i)=>{
+        const meta=chart.getDatasetMeta(i);
+        if(!meta||meta.hidden)return;
+        meta.data.forEach((el,j)=>{
+          if(!el||isNaN(el.x)||isNaN(el.y))return;
+          const val=ds.data[j];
+          if(val==null||val===0)return;
+          const text=opts.fmt?opts.fmt(val):String(Math.round(val));
+          if(!text)return;
+          const base=el.base??el.y;
+          ctx.save();ctx.font=fnt;
+          const textW=ctx.measureText(text).width;
+          const inColor=(opts.dsColors&&opts.dsColors[i])||opts.color||'#fff';
+          const outColor=Chart.defaults.color||'#949390';
+          if(mode==='h-inside'){
+            const barW=Math.abs(el.x-base);
+            ctx.textBaseline='middle';
+            if(barW>=textW+10){
+              ctx.fillStyle=inColor;ctx.textAlign='center';
+              ctx.fillText(text,(el.x+base)/2,el.y);
+            }else if(barW>4){
+              ctx.fillStyle=outColor;
+              ctx.textAlign=val>=0?'left':'right';
+              ctx.fillText(text,val>=0?el.x+4:el.x-4,el.y);
+            }
+          }else if(mode==='v-stacked'){
+            const segH=Math.abs(base-el.y);
+            const fs=opts.fs||10;
+            if(segH>=fs+6){
+              ctx.fillStyle=inColor;
+              ctx.textAlign='center';ctx.textBaseline='middle';
+              ctx.fillText(text,el.x,(el.y+base)/2);
+            }else if(segH>=4){
+              ctx.fillStyle=outColor;
+              ctx.textAlign='center';ctx.textBaseline='bottom';
+              ctx.fillText(text,el.x,Math.min(el.y,base)-2);
+            }
+          }else{
+            ctx.fillStyle=outColor;
+            ctx.textAlign='center';ctx.textBaseline='bottom';
+            ctx.fillText(text,el.x,el.y-3);
+          }
+          ctx.restore();
+        });
+      });
+    }catch(e){}
+  }
+});
+
 /* ── MONTHLY REVENUE CHART ── */
+_lblMap.set('cSalesRev',{mode:'v-stacked',fmt:v=>fmtR(v),fs:9,dsColors:['#fff','#0D0D0B']});
 new Chart(document.getElementById('cSalesRev'),{
   type:'bar',
   data:{
@@ -446,6 +507,7 @@ new Chart(document.getElementById('cSalesRev'),{
   },
   options:{
     responsive:true,maintainAspectRatio:false,
+    layout:{padding:{top:22}},
     plugins:{legend:{position:'bottom',labels:{padding:16,boxWidth:12}},
       tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtR(c.parsed.y)}}},
     scales:{y:{grid:gridLine,ticks:{callback:v=>fmtR(v)}},x:{grid:{display:false}}}
@@ -453,6 +515,7 @@ new Chart(document.getElementById('cSalesRev'),{
 });
 
 /* ── STORE VISITS CHART ── */
+_lblMap.set('cActivity',{mode:'v-stacked',fmt:v=>String(Math.round(v)),fs:9,color:'#fff'});
 new Chart(document.getElementById('cActivity'),{
   type:'bar',
   data:{
@@ -461,6 +524,7 @@ new Chart(document.getElementById('cActivity'),{
   },
   options:{
     responsive:true,maintainAspectRatio:false,
+    layout:{padding:{top:22}},
     plugins:{legend:{display:false},
       tooltip:{callbacks:{label:c=>c.parsed.y+' visits'}}},
     scales:{y:{grid:gridLine,ticks:{stepSize:10}},x:{grid:{display:false}}}
@@ -468,6 +532,7 @@ new Chart(document.getElementById('cActivity'),{
 });
 
 /* ── CATEGORY CHART ── */
+_lblMap.set('cAccCat',{mode:'h-inside',fmt:v=>'R'+v.toFixed(2)+'M',fs:9,color:'#0D0D0B'});
 new Chart(document.getElementById('cAccCat'),{
   type:'bar',
   data:{
