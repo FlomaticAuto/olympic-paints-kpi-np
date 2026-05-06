@@ -245,7 +245,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R7.80M</div>
-    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 21:46</div>
+    <div class="hdr-meta">Week ending 1 May 2026 &middot; Generated 06 May 2026 22:04</div>
   </div>
 </div>
 
@@ -363,6 +363,25 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
     Commission = (Actual &minus; Baseline &times; 1.10) &times; 4% &times; KPI Score%
   </div>
 
+  <div id="qYtdBanner" class="card" style="margin:0 0 14px;background:var(--color-surface-secondary);
+       color:var(--color-text-on-navy);border:1px solid var(--color-border-default)">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px">
+      <div>
+        <div style="font-family:var(--font-display);font-size:11px;font-weight:700;text-transform:uppercase;
+                    letter-spacing:.12em;color:var(--color-brand-primary);margin-bottom:4px">
+          2026 Year-to-date Commission
+        </div>
+        <div style="font-family:var(--font-display);font-size:30px;font-weight:900;line-height:1" id="qYtdEarned">R0</div>
+        <div style="font-family:var(--font-body);font-size:12px;opacity:.75;margin-top:4px" id="qYtdSub">&mdash;</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-display);font-size:10px;font-weight:600;text-transform:uppercase;
+                    letter-spacing:.08em;opacity:.6;margin-bottom:4px">Max @ 100% KPI</div>
+        <div style="font-family:var(--font-display);font-size:18px;font-weight:800" id="qYtdMax">R0</div>
+      </div>
+    </div>
+  </div>
+
   <div class="qnav" id="qnav"><button class="qbtn" data-q="Q1" onclick="selectQuarter('Q1')">Q1 <span class="qbtn-sub">Jan–Mar</span></button><button class="qbtn active" data-q="Q2" onclick="selectQuarter('Q2')">Q2 <span class="qbtn-sub">Apr–Jun</span></button><button class="qbtn" data-q="Q3" onclick="selectQuarter('Q3')">Q3 <span class="qbtn-sub">Jul–Sep</span></button><button class="qbtn" data-q="Q4" onclick="selectQuarter('Q4')">Q4 <span class="qbtn-sub">Oct–Dec</span></button></div>
 
   <div class="kpi-grid" id="qKpis"></div>
@@ -387,6 +406,12 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
       <strong>F (Training &amp; Merchandising):</strong> training register per key account &mdash; attendance list, training report, photo evidence.<br>
       <strong>Settled-invoice qualifier:</strong> KPI A commission is only payable on invoices settled within 30&ndash;60 days. The collections check is not yet automated &mdash; commission shown above assumes full settlement.
     </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="card-title" id="qCommissionTitle">Commission Calculation</div>
+    <div class="card-sub" id="qCommissionSub">Step-by-step working &mdash; what the rep is liable to earn</div>
+    <div id="qCommissionBody" style="margin-top:14px"></div>
   </div>
 
   <div class="card" id="qVerified" style="margin-top:14px"></div>
@@ -645,7 +670,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 1 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 06 May 2026 21:46 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 06 May 2026 22:04 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -995,10 +1020,8 @@ function _kpiRow(letter, name, weight, pillCls, pillText, status, earned){
     + '</tr>';
 }
 
-function renderScorecard(){
-  const d = Q_DATA[curQ];
-  if (!d){ return; }
-
+function _scoreQuarter(d){
+  // Returns scores A..F, growthAbove, maxCommission, totalScore, commission, yoy, vsTarget, target, baselinePlus10
   const cur  = d.sales || 0;
   const prev = d.prev  || 0;
   const target = prev * 1.30;
@@ -1007,22 +1030,15 @@ function renderScorecard(){
   const vsTarget = target > 0 ? (cur/target - 1) * 100 : null;
   const growthAbove = Math.max(0, cur - baselinePlus10);
 
-  // ── A. Sales Growth & Collections (30%) ────────────────────────────
+  // A. Sales Growth & Collections (30%)
   let aScore=0, aPill=['neu','&mdash;'], aStatus='No prior-year data for comparison.';
   if (yoy !== null){
-    if (yoy >= 10){
-      aScore = 30; aPill = ['grn','✓ +'+yoy.toFixed(1)+'% YoY'];
-      aStatus = 'Qualifies — '+yoy.toFixed(1)+'% above prior year (R'+ (cur/1e6).toFixed(2) +'M vs R'+ (prev/1e6).toFixed(2) +'M)';
-    } else if (yoy >= 0){
-      aScore = +(yoy/10*30).toFixed(1); aPill = ['amb','⚠ +'+yoy.toFixed(1)+'% YoY'];
-      aStatus = 'Below 10% threshold — partial credit';
-    } else {
-      aScore = 0; aPill = ['red','✗ '+yoy.toFixed(1)+'% YoY'];
-      aStatus = 'Declining vs prior year';
-    }
+    if (yoy >= 10){ aScore = 30; aPill = ['grn','✓ +'+yoy.toFixed(1)+'% YoY']; aStatus = 'Qualifies — '+yoy.toFixed(1)+'% above prior year (R'+(cur/1e6).toFixed(2)+'M vs R'+(prev/1e6).toFixed(2)+'M)'; }
+    else if (yoy >= 0){ aScore = +(yoy/10*30).toFixed(1); aPill = ['amb','⚠ +'+yoy.toFixed(1)+'% YoY']; aStatus = 'Below 10% threshold — partial credit'; }
+    else { aScore = 0; aPill = ['red','✗ '+yoy.toFixed(1)+'% YoY']; aStatus = 'Declining vs prior year'; }
   }
 
-  // ── B. Discount Management (20%) — markup vs Rock Bottom ───────────
+  // B. Discount Management (20%)
   let bScore=0, bPill=['neu','⚠ No data'], bStatus='No invoice lines with rock-bottom prices in this quarter.';
   if (d.markup_pct !== null && d.markup_lines > 0){
     const m = d.markup_pct;
@@ -1034,27 +1050,50 @@ function renderScorecard(){
     else { bPill = ['red','✗ +'+m.toFixed(1)+'% above RB']; bStatus = 'Below +11% — '+d.markup_lines.toLocaleString()+' lines averaged +'+m.toFixed(2)+'% above Rock Bottom'; }
   }
 
-  // ── C. Customer Dev & CRM (20%) — Hit/Miss; threshold 5/mo = 15/qtr
-  let cScore=0, cPill, cStatus;
+  // C. Customer Dev & CRM (20%) — Hit/Miss
   const vc = d.verified_count;
+  let cScore=0, cPill, cStatus;
   if (vc >= 15){ cScore = 20; cPill = ['grn','✓ '+vc+' verified']; cStatus = 'Hit — '+vc+' new/reactivated stores verified this quarter (threshold 15)'; }
-  else { cScore = 0;  cPill = ['red','✗ '+vc+' / 15']; cStatus = 'Miss — '+vc+' verified vs 15 required (5/month over the quarter)'; }
+  else { cScore = 0; cPill = ['red','✗ '+vc+' / 15']; cStatus = 'Miss — '+vc+' verified vs 15 required (5/month over the quarter)'; }
 
-  // ── D. Product Development (10%) — needs upsell log ────────────────
+  // D. Product Development (10%) — needs upsell log
   const dScore = 0, dPill = ['neu','⚠ No data'], dStatus = 'Awaiting upsell tracking source (focus products, weekly count).';
 
-  // ── E. New Customer Onboarding (10%) ──────────────────────────────
+  // E. New Customer Onboarding (10%)
   let eScore=0, ePill, eStatus;
   if (vc >= 6){ eScore = 10; ePill = ['grn','✓ '+vc+' verified']; eStatus = 'Full credit — '+vc+' new trading customers verified this quarter (target 6)'; }
   else if (vc >= 3){ eScore = 5; ePill = ['amb','⚠ '+vc+' / 6']; eStatus = 'Half credit — '+vc+' new trading customers (avg ≥ 1/month)'; }
   else { eScore = 0; ePill = ['red','✗ '+vc+' / 6']; eStatus = 'No credit — '+vc+' verified vs 6 required (2/month over the quarter)'; }
 
-  // ── F. Training & Merchandising (10%) — needs training log ─────────
+  // F. Training & Merchandising (10%) — needs training log
   const fScore = 0, fPill = ['neu','⚠ No data'], fStatus = 'Awaiting training register per key account (attendance, photos, report).';
 
   const totalScore = aScore + bScore + cScore + dScore + eScore + fScore;
   const maxCommission = growthAbove * 0.04;
-  const curCommission = maxCommission * (totalScore / 100);
+  const commission = maxCommission * (totalScore / 100);
+
+  return {
+    cur, prev, target, baselinePlus10, yoy, vsTarget, growthAbove, maxCommission, totalScore, commission,
+    A:[aScore, aPill, aStatus, 30],  B:[bScore, bPill, bStatus, 20],  C:[cScore, cPill, cStatus, 20],
+    D:[dScore, dPill, dStatus, 10],  E:[eScore, ePill, eStatus, 10],  F:[fScore, fPill, fStatus, 10],
+  };
+}
+
+function _zar(v){ return 'R' + Math.round(v).toLocaleString('en-ZA'); }
+
+function renderScorecard(){
+  const d = Q_DATA[curQ];
+  if (!d){ return; }
+  const s = _scoreQuarter(d);
+  const cur=s.cur, prev=s.prev, target=s.target, baselinePlus10=s.baselinePlus10;
+  const yoy=s.yoy, vsTarget=s.vsTarget, growthAbove=s.growthAbove;
+  const totalScore=s.totalScore, maxCommission=s.maxCommission, curCommission=s.commission;
+  const aScore=s.A[0], aPill=s.A[1], aStatus=s.A[2];
+  const bScore=s.B[0], bPill=s.B[1], bStatus=s.B[2];
+  const cScore=s.C[0], cPill=s.C[1], cStatus=s.C[2];
+  const dScore=s.D[0], dPill=s.D[1], dStatus=s.D[2];
+  const eScore=s.E[0], ePill=s.E[1], eStatus=s.E[2];
+  const fScore=s.F[0], fPill=s.F[1], fStatus=s.F[2];
 
   // Top KPI strip
   const yoyStr = yoy === null ? '—' : (yoy>=0?'+':'')+yoy.toFixed(1)+'%';
@@ -1092,6 +1131,72 @@ function renderScorecard(){
     + _kpiRow('D', 'Product Development',          10, dPill[0], dPill[1], dStatus, dScore)
     + _kpiRow('E', 'New Customer Onboarding',      10, ePill[0], ePill[1], eStatus, eScore)
     + _kpiRow('F', 'Training & Merchandising',     10, fPill[0], fPill[1], fStatus, fScore);
+
+  // Commission breakdown — step-by-step working
+  document.getElementById('qCommissionTitle').textContent = 'Commission Calculation — ' + d.label;
+  document.getElementById('qCommissionSub').textContent =
+    'Qualifying growth × 4% × KPI Score% — what the rep is liable to earn this quarter';
+
+  const kpiBreakdownRows = [
+    ['A', 'Sales Growth & Collections',  30, aScore],
+    ['B', 'Discount Management',         20, bScore],
+    ['C', 'Customer Development & CRM',  20, cScore],
+    ['D', 'Product Development',         10, dScore],
+    ['E', 'New Customer Onboarding',     10, eScore],
+    ['F', 'Training & Merchandising',    10, fScore],
+  ].map(([letter, name, weight, score]) => {
+    const contrib = maxCommission * (score / 100);
+    const cls = score === weight ? 'up' : score > 0 ? 'warn' : 'neu';
+    return '<tr>'
+      + '<td><strong>'+letter+'</strong> &mdash; '+name+'</td>'
+      + '<td style="text-align:right;color:var(--color-text-secondary)">'+score.toFixed(1)+'% / '+weight+'%</td>'
+      + '<td style="text-align:right;font-family:var(--font-display);font-weight:700" class="'+cls+'">'+_zar(contrib)+'</td>'
+      + '</tr>';
+  }).join('');
+
+  document.getElementById('qCommissionBody').innerHTML =
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:14px">'
+      + '<div style="padding:12px;border:1px solid var(--color-border-default);border-radius:var(--r-md);background:var(--color-surface-sunken)">'
+        + '<div style="font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em">Sales (period)</div>'
+        + '<div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-top:4px">'+_zar(cur)+'</div></div>'
+      + '<div style="padding:12px;border:1px solid var(--color-border-default);border-radius:var(--r-md);background:var(--color-surface-sunken)">'
+        + '<div style="font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em">Baseline (PY)</div>'
+        + '<div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-top:4px">'+_zar(prev)+'</div></div>'
+      + '<div style="padding:12px;border:1px solid var(--color-border-default);border-radius:var(--r-md);background:var(--color-surface-sunken)">'
+        + '<div style="font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em">Baseline + 10%</div>'
+        + '<div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-top:4px">'+_zar(baselinePlus10)+'</div></div>'
+      + '<div style="padding:12px;border:1px solid var(--color-success-bd);border-radius:var(--r-md);background:var(--color-success-bg)">'
+        + '<div style="font-size:11px;color:var(--color-success-fg);text-transform:uppercase;letter-spacing:.06em">Qualifying Growth</div>'
+        + '<div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-top:4px;color:var(--color-success-fg)">'+_zar(growthAbove)+'</div></div>'
+      + '<div style="padding:12px;border:1px solid var(--color-border-default);border-radius:var(--r-md);background:var(--color-surface-sunken)">'
+        + '<div style="font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em">Max Pool (× 4%)</div>'
+        + '<div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-top:4px">'+_zar(maxCommission)+'</div></div>'
+      + '<div style="padding:12px;border:1px solid var(--color-warning-bd);border-radius:var(--r-md);background:var(--color-warning-bg)">'
+        + '<div style="font-size:11px;color:var(--color-warning-fg);text-transform:uppercase;letter-spacing:.06em">KPI Score &times; Pool</div>'
+        + '<div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-top:4px;color:var(--color-warning-fg)">'+_zar(curCommission)+'</div></div>'
+    + '</div>'
+    + '<div class="tw"><table>'
+    + '<thead><tr><th>KPI</th><th style="text-align:right">Earned</th><th style="text-align:right">Commission Earned</th></tr></thead>'
+    + '<tbody>'+kpiBreakdownRows+'</tbody>'
+    + '<tfoot><tr style="background:var(--color-surface-secondary);color:var(--color-text-on-navy)">'
+      + '<td style="padding:10px 14px;font-family:var(--font-display);text-transform:uppercase;letter-spacing:.06em;font-weight:800">Total</td>'
+      + '<td style="text-align:right;padding:10px 14px;font-family:var(--font-display);font-weight:800">'+totalScore.toFixed(1)+'%</td>'
+      + '<td style="text-align:right;padding:10px 14px;font-family:var(--font-display);font-weight:900;font-size:15px">'+_zar(curCommission)+'</td>'
+    + '</tr></tfoot>'
+    + '</table></div>';
+
+  // YTD across all quarters of the displayed year
+  let ytdEarned = 0, ytdMax = 0;
+  for (const qk of ['Q1','Q2','Q3','Q4']){
+    const qd = Q_DATA[qk]; if (!qd) continue;
+    const qs = _scoreQuarter(qd);
+    ytdEarned += qs.commission;
+    ytdMax    += qs.maxCommission;
+  }
+  document.getElementById('qYtdEarned').textContent = _zar(ytdEarned);
+  document.getElementById('qYtdMax').textContent    = _zar(ytdMax);
+  document.getElementById('qYtdSub').textContent    =
+    'Sum of estimated commission across Q1–Q4 ' + d.label.split(' ')[1] + ' at current scores';
 
   // Verified-stores card
   let vHtml = '<div class="card-title">Verified New Stores — '+d.label+'</div>'
