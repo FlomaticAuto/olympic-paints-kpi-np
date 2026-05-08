@@ -163,6 +163,23 @@
 .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
 .chart-wrap{position:relative;margin-top:14px}
 .h260{height:260px}.h300{height:300px}.h280{height:280px}.h340{height:340px}
+/* ── HEATMAP ─────────────────────────────────────────────── */
+.hm-pills{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+.hm-pill{font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;padding:5px 12px;border-radius:var(--r-pill);border:1px solid var(--color-border-default);
+  background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.hm-pill:hover{border-color:var(--color-brand-primary);color:var(--color-text-primary)}
+.hm-pill.active{background:var(--color-brand-primary);color:var(--color-text-on-brand);border-color:var(--color-brand-primary)}
+.hm-wrap{overflow-x:auto;padding-bottom:6px;margin-top:4px}
+.hm-row{display:flex;gap:4px;min-width:max-content}
+.hm-cell{width:46px;min-width:46px;border-radius:6px;padding:7px 4px 6px;text-align:center;cursor:default;
+  transition:transform .1s}
+.hm-cell:hover{transform:scale(1.08)}
+.hm-date{font-size:10px;font-family:var(--font-body);margin-bottom:3px}
+.hm-count{font-size:20px;font-weight:900;font-family:var(--font-display);line-height:1}
+.hm-legend-row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.hm-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.hm-leg-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0}
 /* ── TABLES ──────────────────────────────────────────────── */
 .tw{overflow-x:auto;margin-top:14px}
 table{width:100%;border-collapse:collapse;font-family:var(--font-body);font-size:13px}
@@ -245,7 +262,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R7.80M</div>
-    <div class="hdr-meta">Week ending 8 May 2026 &middot; Generated 08 May 2026 11:41</div>
+    <div class="hdr-meta">Week ending 8 May 2026 &middot; Generated 08 May 2026 12:01</div>
   </div>
 </div>
 
@@ -587,6 +604,20 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
       <div class="kpi-delta neu">Open leads — Zoho CRM</div>
     </div>
   </div>
+  <div class="card" style="margin-bottom:18px">
+    <div class="card-title">Daily Store Visits &mdash; Activity Heatmap</div>
+    <div class="card-sub">Check-in visits per weekday &middot; select a month to filter</div>
+    <div class="hm-pills" id="hm-pills"></div>
+    <div class="hm-wrap"><div class="hm-row" id="hm-grid"></div></div>
+    <div class="hm-legend-row">
+      <span style="font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-body)">Visits:</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:rgba(255,255,255,0.06);border:1px solid var(--color-border-subtle)"></span>0</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#1A3D6E"></span>1&ndash;2</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#2D6BA8"></span>3&ndash;5</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#6B9ED0"></span>6&ndash;9</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#F5C400"></span>10+</span>
+    </div>
+  </div>
   <div class="card">
     <div class="card-title">Store Visits vs Meetings per Month</div>
     <div class="card-sub">Store visits (merchandising check-ins) compared with CRM meetings logged per month</div>
@@ -687,7 +718,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 8 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 08 May 2026 11:41 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 08 May 2026 12:01 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -833,6 +864,59 @@ new Chart(document.getElementById('cSalesRev'),{
   }
 });
 
+/* ── DAILY HEATMAP ── */
+(function(){
+  const DV={"2026-05-07": 4, "2026-03-14": 1, "2026-03-12": 1, "2026-03-10": 1, "2026-03-07": 2, "2026-03-06": 1, "2026-02-26": 1, "2026-02-24": 2, "2026-02-19": 1, "2026-02-17": 1, "2026-02-10": 1, "2026-02-04": 1, "2026-02-03": 1, "2026-02-02": 1, "2026-01-29": 2, "2026-01-27": 2, "2026-01-28": 1, "2026-01-24": 3, "2026-01-19": 3, "2026-01-14": 1, "2026-01-13": 1, "2026-01-09": 1, "2026-01-08": 1, "2026-01-07": 1, "2026-01-06": 1, "2025-12-29": 1, "2025-12-17": 1, "2025-12-11": 1, "2025-12-10": 1, "2025-12-09": 1, "2025-12-08": 1, "2025-12-05": 1, "2025-12-04": 3, "2025-12-03": 1, "2025-12-02": 2, "2025-11-26": 1, "2025-11-24": 2, "2025-11-19": 1, "2025-10-29": 1, "2025-10-13": 1};
+  const DNAMES=['','Mon','Tue','Wed','Thu','Fri'];
+  const MNF=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const dvMonths=[...new Set(Object.keys(DV).map(function(d){return d.slice(0,7);})  )].sort();
+  if(!dvMonths.length)return;
+  let hmCur=dvMonths[dvMonths.length-1];
+
+  function hmBg(n){
+    if(n===0)return'rgba(255,255,255,0.06)';
+    if(n<=2)return'#1A3D6E';
+    if(n<=5)return'#2D6BA8';
+    if(n<=9)return'#6B9ED0';
+    return'#F5C400';
+  }
+  function hmFg(n){return n>=10?'#0D0D0B':'var(--color-text-secondary)';}
+  function hmCntFg(n){return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');}
+  function pad2(v){return String(v).padStart(2,'0');}
+
+  function renderHm(ym){
+    var parts=ym.split('-');
+    var yr=+parts[0],mo=+parts[1];
+    var dim=new Date(yr,mo,0).getDate();
+    var html='';
+    for(var d=1;d<=dim;d++){
+      var dt=new Date(yr,mo-1,d);
+      var dow=dt.getDay();
+      if(dow<1||dow>5)continue;
+      var iso=yr+'-'+pad2(mo)+'-'+pad2(d);
+      var n=DV[iso]||0;
+      var bg=hmBg(n);var fg=hmFg(n);var cf=hmCntFg(n);
+      html+='<div class="hm-cell" style="background:'+bg+'" title="'+iso+': '+n+' visit'+(n!==1?'s':'')+'">'
+           +'<div class="hm-date" style="color:'+fg+'">'+DNAMES[dow]+' '+pad2(d)+'</div>'
+           +'<div class="hm-count" style="color:'+cf+'">'+(n||'')+'</div>'
+           +'</div>';
+    }
+    document.getElementById('hm-grid').innerHTML=html||
+      '<span style="font-size:12px;color:var(--color-text-tertiary);font-family:var(--font-body);padding:8px">No visit data for this month</span>';
+    document.querySelectorAll('.hm-pill').forEach(function(p){p.classList.toggle('active',p.dataset.ym===ym);});
+  }
+
+  window.renderHm=renderHm;
+
+  var pillsEl=document.getElementById('hm-pills');
+  pillsEl.innerHTML=dvMonths.map(function(ym){
+    var parts=ym.split('-');
+    var label=MNF[+parts[1]-1]+' '+parts[0];
+    return'<button class="hm-pill'+(ym===hmCur?' active':'')+'" data-ym="'+ym+'" onclick="renderHm(this.dataset.ym)">'+label+'</button>';
+  }).join('');
+
+  renderHm(hmCur);
+})();
 /* ── STORE VISITS vs MEETINGS CHART ── */
 _lblMap.set('cActivity',{mode:'v',fmt:v=>String(Math.round(v)),fs:9,color:'#fff'});
 new Chart(document.getElementById('cActivity'),{
