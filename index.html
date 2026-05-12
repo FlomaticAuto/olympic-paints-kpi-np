@@ -268,7 +268,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R9.08M</div>
-    <div class="hdr-meta">Week ending 12 May 2026 &middot; Generated 12 May 2026 08:30</div>
+    <div class="hdr-meta">Week ending 12 May 2026 &middot; Generated 12 May 2026 08:40</div>
   </div>
 </div>
 
@@ -496,6 +496,21 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
 
   <div class="kpi-grid" id="monthlyKpis"></div>
 
+  <div class="card" style="margin-top:18px;margin-bottom:18px">
+    <div class="card-title">Daily Meetings &mdash; Activity Heatmap</div>
+    <div class="card-sub">CRM check-in meetings per weekday &middot; select a month to filter</div>
+    <div class="hm-pills js-hm-pills"></div>
+    <div class="hm-wrap"><div class="hm-row js-hm-grid"></div></div>
+    <div class="hm-legend-row">
+      <span style="font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-body)">Visits:</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:rgba(255,255,255,0.06);border:1px solid var(--color-border-subtle)"></span>0</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#1A3D6E"></span>1&ndash;2</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#2D6BA8"></span>3&ndash;5</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#6B9ED0"></span>6&ndash;9</span>
+      <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:#F5C400"></span>10+</span>
+    </div>
+  </div>
+
   <div class="g2" style="margin-top:18px">
     <div class="card">
       <div class="card-title">Last 12 Months Trend</div>
@@ -616,8 +631,8 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <div class="card" style="margin-bottom:18px">
     <div class="card-title">Daily Meetings &mdash; Activity Heatmap</div>
     <div class="card-sub">CRM check-in meetings per weekday &middot; select a month to filter</div>
-    <div class="hm-pills" id="hm-pills"></div>
-    <div class="hm-wrap"><div class="hm-row" id="hm-grid"></div></div>
+    <div class="hm-pills js-hm-pills" id="hm-pills"></div>
+    <div class="hm-wrap"><div class="hm-row js-hm-grid" id="hm-grid"></div></div>
     <div class="hm-legend-row">
       <span style="font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-body)">Visits:</span>
       <span class="hm-leg-item"><span class="hm-leg-swatch" style="background:rgba(255,255,255,0.06);border:1px solid var(--color-border-subtle)"></span>0</span>
@@ -828,7 +843,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 12 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 12 May 2026 08:30 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 12 May 2026 08:40 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -1039,19 +1054,21 @@ new Chart(document.getElementById('cSalesRev'),{
       html+='</div>';
     });
 
-    document.getElementById('hm-grid').innerHTML=html||
-      '<span style="font-size:12px;color:var(--color-text-tertiary);font-family:var(--font-body);padding:8px">No visit data for this month</span>';
+    var fallback='<span style="font-size:12px;color:var(--color-text-tertiary);font-family:var(--font-body);padding:8px">No visit data for this month</span>';
+    // Render into every heatmap grid on the page (Activity tab + Monthly tab).
+    document.querySelectorAll('.js-hm-grid').forEach(function(el){el.innerHTML=html||fallback;});
     document.querySelectorAll('.hm-pill').forEach(function(p){p.classList.toggle('active',p.dataset.ym===ym);});
   }
 
   window.renderHm=renderHm;
 
-  var pillsEl=document.getElementById('hm-pills');
-  pillsEl.innerHTML=dvMonths.map(function(ym){
+  var pillHtml=dvMonths.map(function(ym){
     var parts=ym.split('-');
     var label=MNF[+parts[1]-1]+' '+parts[0];
     return'<button class="hm-pill'+(ym===hmCur?' active':'')+'" data-ym="'+ym+'" onclick="renderHm(this.dataset.ym)">'+label+'</button>';
   }).join('');
+  // Mount the same pill row into every heatmap container on the page.
+  document.querySelectorAll('.js-hm-pills').forEach(function(el){el.innerHTML=pillHtml;});
 
   renderHm(hmCur);
 })();
