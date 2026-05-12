@@ -268,7 +268,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R7.80M</div>
-    <div class="hdr-meta">Week ending 12 May 2026 &middot; Generated 12 May 2026 08:10</div>
+    <div class="hdr-meta">Week ending 12 May 2026 &middot; Generated 12 May 2026 08:26</div>
   </div>
 </div>
 
@@ -326,8 +326,8 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
 
   <div class="g2">
     <div class="card">
-      <div class="card-title">Monthly Revenue &mdash; FY2025 vs FY2026</div>
-      <div class="card-sub">Full FY2025 (Mar&ndash;Feb) alongside FY2026 to date (Mar onward)</div>
+      <div class="card-title">Monthly Revenue &mdash; 2025 vs 2026</div>
+      <div class="card-sub">Net revenue per calendar month &mdash; 2026 to date alongside the same months in 2025</div>
       <div class="chart-wrap h280"><canvas id="cOvRev"></canvas></div>
     </div>
     <div class="card">
@@ -551,8 +551,8 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
     </div>
   </div>
   <div class="card">
-    <div class="card-title">Monthly Revenue &mdash; FY2025 vs FY2026</div>
-    <div class="card-sub">Full FY2025 (Mar&ndash;Feb) alongside FY2026 to date (Mar onward)</div>
+    <div class="card-title">Monthly Revenue &mdash; 2025 vs 2026</div>
+    <div class="card-sub">Net revenue per calendar month &mdash; 2026 to date alongside the same months in 2025</div>
     <div class="chart-wrap h300"><canvas id="cSalesRev"></canvas></div>
   </div>
 </div>
@@ -828,7 +828,7 @@ tbody td{padding:9px 14px;vertical-align:middle;color:var(--color-text-primary)}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 12 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 12 May 2026 08:10 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 12 May 2026 08:26 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -923,10 +923,10 @@ _lblMap.set('cOvRev',{mode:'v-stacked',fmt:v=>fmtR(v),fs:9,dsColors:['#fff','#0D
 new Chart(document.getElementById('cOvRev'),{
   type:'bar',
   data:{
-    labels:["Mar 25","Apr 25","May 25","Jun 25","Jul 25","Aug 25","Sep 25","Oct 25","Nov 25","Dec 25","Jan 26","Feb 26"],
+    labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
     datasets:[
-      {label:'FY2025',data:[3624528.45,3586410.55,3502191.62,3354854.74,3905795.02,4275505.66,3792598.66,4330911.33,5020111.4,7447786.12,3288773.26,4038739.36],backgroundColor:'rgba(26,61,110,0.65)',borderRadius:5},
-      {label:'FY2026',data:[3057397.78,4455001.72,284412.21,0,0,0,0,0,0,0,0,0],backgroundColor:'rgba(245,196,0,0.85)',borderRadius:5}
+      {label:'2025',data:[3624528.45,3586410.55,3502191.62,3354854.74,3905795.02,4275505.66,3792598.66,4330911.33,5020111.4,7447786.12,3288773.26,4038739.36],backgroundColor:'rgba(26,61,110,0.65)',borderRadius:5},
+      {label:'2026',data:[3057397.78,4455001.72,284412.21,0,0,0,0,0,0,0,0,0],backgroundColor:'rgba(245,196,0,0.85)',borderRadius:5}
     ]
   },
   options:{
@@ -959,10 +959,10 @@ _lblMap.set('cSalesRev',{mode:'v-stacked',fmt:v=>fmtR(v),fs:9,dsColors:['#fff','
 new Chart(document.getElementById('cSalesRev'),{
   type:'bar',
   data:{
-    labels:["Mar 25","Apr 25","May 25","Jun 25","Jul 25","Aug 25","Sep 25","Oct 25","Nov 25","Dec 25","Jan 26","Feb 26"],
+    labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
     datasets:[
-      {label:'FY2025',data:[3624528.45,3586410.55,3502191.62,3354854.74,3905795.02,4275505.66,3792598.66,4330911.33,5020111.4,7447786.12,3288773.26,4038739.36],backgroundColor:'rgba(26,61,110,0.65)',borderRadius:5},
-      {label:'FY2026',data:[3057397.78,4455001.72,284412.21,0,0,0,0,0,0,0,0,0],backgroundColor:'rgba(245,196,0,0.85)',borderRadius:5}
+      {label:'2025',data:[3624528.45,3586410.55,3502191.62,3354854.74,3905795.02,4275505.66,3792598.66,4330911.33,5020111.4,7447786.12,3288773.26,4038739.36],backgroundColor:'rgba(26,61,110,0.65)',borderRadius:5},
+      {label:'2026',data:[3057397.78,4455001.72,284412.21,0,0,0,0,0,0,0,0,0],backgroundColor:'rgba(245,196,0,0.85)',borderRadius:5}
     ]
   },
   options:{
