@@ -183,14 +183,15 @@
 .hm-cell:hover{transform:scale(1.08)}
 .hm-date{font-size:10px;font-family:var(--font-body);margin-bottom:3px}
 .hm-count{font-size:20px;font-weight:900;font-family:var(--font-display);line-height:1}
-/* Lead-visit strip: thin band at the bottom of the cell whose color
-   intensifies with lead count (g1→g4). Coexists with the visit ramp on
-   the cell background, so a day shows BOTH signals without conflict. */
-.hm-lstrip{position:absolute;left:0;right:0;bottom:0;height:5px;pointer-events:none}
-.hm-lstrip.lvl-1{background:#1a5c50}
-.hm-lstrip.lvl-2{background:#2D8C7A}
-.hm-lstrip.lvl-3{background:#4ade80}
-.hm-lstrip.lvl-4{background:#86efac}
+/* Lead-visit fill: bottom-up bright-green bar whose HEIGHT is proportional
+   to the share of meetings linked to Leads on that day:
+     fill% = leads / max(visits, leads) × 100
+   So 9 of 10 visits as leads = 90% green; 1 of 10 = 10% green; leads only
+   (no check-in) = 100% green over the empty cell. Visit count/date sit on
+   top via z-index. */
+.hm-lstrip{position:absolute;left:0;right:0;bottom:0;background:#4ade80;
+  pointer-events:none;z-index:0}
+.hm-date,.hm-count{position:relative;z-index:1}
 .hm-legend-row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
 .hm-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
 .hm-leg-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0}
@@ -368,7 +369,7 @@ html,body{overflow-x:hidden}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R9.26M</div>
-    <div class="hdr-meta">Week ending 14 May 2026 &middot; Generated 14 May 2026 13:58</div>
+    <div class="hdr-meta">Week ending 14 May 2026 &middot; Generated 14 May 2026 14:12</div>
   </div>
 </div>
 
@@ -955,7 +956,7 @@ html,body{overflow-x:hidden}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 14 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 14 May 2026 13:58 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 14 May 2026 14:12 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -1125,16 +1126,25 @@ new Chart(document.getElementById('cSalesRev'),{
     if(n<=9)return'#6B9ED0';
     return'#F5C400';
   }
-  // Lead-visit strip level (1-4) based on lead count. 0 = no strip.
-  function leadLvl(nL){
-    if(!nL) return 0;
-    if(nL<=1) return 1;
-    if(nL<=2) return 2;
-    if(nL<=4) return 3;
-    return 4;
+  // Lead-visit strip fill % = leads / max(visits, leads) × 100.
+  // Bottom-up bar; 100% means the day's entire activity was lead-tagged.
+  function leadFill(n,nL){
+    if(!nL || nL<=0) return 0;
+    var total=Math.max(n||0,nL);
+    if(total<=0) return 0;
+    return Math.min(100, Math.round((nL/total)*100));
   }
-  function hmFg(n){return n>=10?'#0D0D0B':'var(--color-text-secondary)';}
-  function hmCntFg(n){return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');}
+  function hmFg(n,fill){
+    // Bright green strip covers most of the cell when fill is high — date sits at the top.
+    if(fill>=70) return '#0D2040';
+    return n>=10?'#0D0D0B':'var(--color-text-secondary)';
+  }
+  function hmCntFg(n,fill){
+    // Count is more vertically central — it goes dark whenever the strip
+    // reaches roughly the middle of the cell.
+    if(fill>=30) return '#0D2040';
+    return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');
+  }
   function pad2(v){return String(v).padStart(2,'0');}
   function isoWk(d){
     var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
@@ -1172,19 +1182,18 @@ new Chart(document.getElementById('cSalesRev'),{
         var iso=yr+'-'+pad2(mo)+'-'+pad2(o.d);
         var n=DV[iso]||0;
         var nL=DL[iso]||0;
-        var lvl=leadLvl(nL);
-        var fg=hmFg(n);var cf=hmCntFg(n);
+        var fill=leadFill(n,nL);
+        var fg=hmFg(n,fill);var cf=hmCntFg(n,fill);
         // Cell background = visit ramp (existing). Lead activity shown as a
-        // thin green strip at the bottom — coexists with visit color so
-        // both signals are visible.
+        // bottom-up green BAR whose height = lead share of total activity.
         var inline=n===0?'':'background:'+hmBg(n);
         var isEmpty=(n===0 && nL===0);
-        var stripHtml=lvl>0?('<div class="hm-lstrip lvl-'+lvl+'"></div>'):'';
+        var stripHtml=fill>0?('<div class="hm-lstrip" style="height:'+fill+'%"></div>'):'';
         var tipExtra=nL>0?(', '+nL+' to lead'+(nL!==1?'s':'')):'';
         html+='<div class="hm-cell'+(isEmpty?' empty':'')+'" style="'+inline+'" title="'+iso+': '+n+' visit'+(n!==1?'s':'')+tipExtra+'">'
+             +stripHtml
              +'<div class="hm-date" style="color:'+fg+'">'+DNAMES[o.dow]+' '+pad2(o.d)+'</div>'
              +'<div class="hm-count" style="color:'+cf+'">'+(n||'')+'</div>'
-             +stripHtml
              +'</div>';
       });
       html+='</div>';
