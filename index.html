@@ -360,7 +360,7 @@ html,body{overflow-x:hidden}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R9.26M</div>
-    <div class="hdr-meta">Week ending 14 May 2026 &middot; Generated 14 May 2026 09:57</div>
+    <div class="hdr-meta">Week ending 14 May 2026 &middot; Generated 14 May 2026 12:30</div>
   </div>
 </div>
 
@@ -947,7 +947,7 @@ html,body{overflow-x:hidden}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 14 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 14 May 2026 09:57 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 14 May 2026 12:30 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -1096,9 +1096,17 @@ new Chart(document.getElementById('cSalesRev'),{
 /* ── DAILY HEATMAP ── */
 (function(){
   const DV={"2025-04-30": 1, "2025-05-02": 1, "2025-05-05": 4, "2025-05-06": 4, "2025-05-08": 1, "2025-05-09": 1, "2025-05-12": 4, "2025-05-13": 2, "2025-05-14": 4, "2025-05-19": 3, "2025-05-20": 4, "2025-05-21": 3, "2025-05-22": 2, "2025-05-26": 6, "2025-05-27": 11, "2025-05-28": 8, "2025-06-02": 4, "2025-06-03": 1, "2025-06-23": 5, "2025-06-24": 4, "2025-06-25": 4, "2025-06-26": 1, "2025-06-30": 4, "2025-07-01": 14, "2025-07-02": 13, "2025-07-03": 3, "2025-07-07": 7, "2025-07-08": 6, "2025-07-09": 6, "2025-07-10": 2, "2025-07-16": 2, "2025-07-17": 1, "2025-07-21": 3, "2025-07-22": 3, "2025-07-23": 5, "2025-07-24": 1, "2025-07-28": 1, "2025-07-29": 19, "2025-07-30": 12, "2025-07-31": 1, "2025-08-04": 3, "2025-08-05": 7, "2025-08-06": 6, "2025-08-07": 3, "2025-08-12": 8, "2025-08-14": 6, "2025-08-19": 6, "2025-08-20": 5, "2025-08-22": 2, "2025-08-25": 5, "2025-08-26": 19, "2025-08-27": 8, "2025-08-29": 11, "2025-09-01": 4, "2025-09-02": 8, "2025-09-03": 5, "2025-09-04": 4, "2025-09-08": 3, "2025-09-12": 5, "2025-09-15": 4, "2025-09-16": 5, "2025-09-17": 5, "2025-09-19": 1, "2025-09-29": 7, "2025-09-30": 21, "2025-10-01": 15, "2025-10-06": 5, "2025-10-07": 8, "2025-10-08": 6, "2025-10-10": 1, "2025-10-14": 8, "2025-10-15": 1, "2025-10-16": 4, "2025-10-20": 3, "2025-10-21": 2, "2025-10-23": 3, "2025-10-27": 3, "2025-10-28": 13, "2025-10-29": 9, "2025-10-30": 1, "2025-10-31": 16, "2025-11-03": 6, "2025-11-04": 3, "2025-11-07": 8, "2025-11-13": 2, "2025-11-14": 12, "2025-11-24": 1, "2025-11-28": 57, "2025-12-08": 14, "2026-01-06": 1, "2026-01-13": 17, "2026-01-21": 1, "2026-01-23": 12, "2026-01-30": 45, "2026-02-10": 16, "2026-02-13": 9, "2026-02-20": 10, "2026-02-25": 37, "2026-02-26": 10, "2026-03-05": 5, "2026-03-09": 12, "2026-03-10": 11, "2026-03-11": 6, "2026-03-12": 2, "2026-03-18": 5, "2026-03-19": 1, "2026-03-23": 9, "2026-03-24": 24, "2026-03-25": 15, "2026-02-23": 1, "2026-03-26": 2, "2026-04-13": 2, "2026-04-14": 5, "2026-04-15": 5, "2026-04-16": 5, "2026-04-20": 9, "2026-04-21": 21, "2026-04-22": 9, "2026-04-23": 2, "2026-04-28": 3, "2026-04-30": 1, "2026-05-04": 6, "2026-05-05": 6, "2026-05-06": 3, "2026-05-07": 1, "2026-05-11": 6, "2026-05-12": 4, "2026-05-13": 3};
+  // DL[iso] = number of meetings on that day where $se_module=='Leads'.
+  // When > 0 the cell switches to a green ramp; brighter = more leads visited.
+  // (Eventually scope this to the rep's Hunting Week / cycle_week=4 only.)
+  const DL={"2026-04-16": 1};
   const DNAMES=['','Mon','Tue','Wed','Thu','Fri'];
   const MNF=["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const dvMonths=[...new Set(Object.keys(DV).map(function(d){return d.slice(0,7);})  )].sort();
+  // Months come from EITHER visits OR lead visits — so a day with only a
+  // lead-linked meeting (no Check-In Time) still appears in the picker.
+  const dvMonths=[...new Set(
+    Object.keys(DV).concat(Object.keys(DL)).map(function(d){return d.slice(0,7);})
+  )].sort();
   if(!dvMonths.length)return;
   let hmCur=dvMonths[dvMonths.length-1];
 
@@ -1109,8 +1117,23 @@ new Chart(document.getElementById('cSalesRev'),{
     if(n<=9)return'#6B9ED0';
     return'#F5C400';
   }
-  function hmFg(n){return n>=10?'#0D0D0B':'var(--color-text-secondary)';}
-  function hmCntFg(n){return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');}
+  // Green ramp for lead-visit days. Brighter = more leads.
+  function hmBgLead(nL){
+    if(nL<=1)return'#1a5c50';
+    if(nL<=2)return'#2D8C7A';
+    if(nL<=4)return'#4ade80';
+    return'#86efac';
+  }
+  function hmFg(n,nL){
+    if(nL && nL>=3) return '#0D0D0B';
+    if(nL && nL>0)  return '#fff';
+    return n>=10?'#0D0D0B':'var(--color-text-secondary)';
+  }
+  function hmCntFg(n,nL){
+    if(nL && nL>=3) return '#0D2040';
+    if(nL && nL>0)  return '#fff';
+    return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');
+  }
   function pad2(v){return String(v).padStart(2,'0');}
   function isoWk(d){
     var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
@@ -1147,10 +1170,15 @@ new Chart(document.getElementById('cSalesRev'),{
       week.days.forEach(function(o){
         var iso=yr+'-'+pad2(mo)+'-'+pad2(o.d);
         var n=DV[iso]||0;
-        var fg=hmFg(n);var cf=hmCntFg(n);
-        // For empty cells, leave bg to the .wk-a/.wk-b class; for filled cells, inline the visit color
-        var inline=n===0?'':'background:'+hmBg(n);
-        html+='<div class="hm-cell'+(n===0?' empty':'')+'" style="'+inline+'" title="'+iso+': '+n+' visit'+(n!==1?'s':'')+'">'
+        var nL=DL[iso]||0;
+        var fg=hmFg(n,nL);var cf=hmCntFg(n,nL);
+        // Lead-visit overlay wins over visit ramp. Otherwise use the blue→yellow
+        // visit ramp; if neither, leave bg to the .wk-a/.wk-b class.
+        var bg = nL>0 ? hmBgLead(nL) : (n===0 ? '' : hmBg(n));
+        var inline = bg ? ('background:'+bg) : '';
+        var isEmpty = (n===0 && nL===0);
+        var tipExtra = nL>0 ? (', '+nL+' to lead'+(nL!==1?'s':'')) : '';
+        html+='<div class="hm-cell'+(isEmpty?' empty':'')+'" style="'+inline+'" title="'+iso+': '+n+' visit'+(n!==1?'s':'')+tipExtra+'">'
              +'<div class="hm-date" style="color:'+fg+'">'+DNAMES[o.dow]+' '+pad2(o.d)+'</div>'
              +'<div class="hm-count" style="color:'+cf+'">'+(n||'')+'</div>'
              +'</div>';
