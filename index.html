@@ -178,11 +178,19 @@
 .hm-wk.wk-b .hm-cell.empty{background:rgba(245,196,0,0.06)}
 .hm-wk.wk-current{border:2px solid var(--color-brand-primary);padding:4px;
   box-shadow:0 0 0 3px rgba(245,196,0,0.12)}
-.hm-cell{width:46px;min-width:46px;border-radius:6px;padding:7px 4px 6px;text-align:center;cursor:default;
-  transition:transform .1s}
+.hm-cell{position:relative;width:46px;min-width:46px;border-radius:6px;padding:7px 4px 10px;text-align:center;cursor:default;
+  transition:transform .1s;overflow:hidden}
 .hm-cell:hover{transform:scale(1.08)}
 .hm-date{font-size:10px;font-family:var(--font-body);margin-bottom:3px}
 .hm-count{font-size:20px;font-weight:900;font-family:var(--font-display);line-height:1}
+/* Lead-visit strip: thin band at the bottom of the cell whose color
+   intensifies with lead count (g1→g4). Coexists with the visit ramp on
+   the cell background, so a day shows BOTH signals without conflict. */
+.hm-lstrip{position:absolute;left:0;right:0;bottom:0;height:5px;pointer-events:none}
+.hm-lstrip.lvl-1{background:#1a5c50}
+.hm-lstrip.lvl-2{background:#2D8C7A}
+.hm-lstrip.lvl-3{background:#4ade80}
+.hm-lstrip.lvl-4{background:#86efac}
 .hm-legend-row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
 .hm-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
 .hm-leg-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0}
@@ -360,7 +368,7 @@ html,body{overflow-x:hidden}
   </div>
   <div class="hdr-r">
     <div class="hdr-ytd">R9.26M</div>
-    <div class="hdr-meta">Week ending 14 May 2026 &middot; Generated 14 May 2026 12:34</div>
+    <div class="hdr-meta">Week ending 14 May 2026 &middot; Generated 14 May 2026 13:58</div>
   </div>
 </div>
 
@@ -947,7 +955,7 @@ html,body{overflow-x:hidden}
   <strong>Olympic Paints</strong> &mdash; Nikhil Panchal Personal KPI Dashboard &mdash; Week ending 14 May 2026<br>
   Data sourced from Amazon QuickSight Weekly Sales Reports and Zoho CRM.<br>
   KPI A scoring uses year-on-year growth vs prior-year baseline. Target: exceed 10% YOY growth for commission eligibility.<br>
-  Generated 14 May 2026 12:34 &middot; <em>Confidential &mdash; for internal use only</em>
+  Generated 14 May 2026 13:58 &middot; <em>Confidential &mdash; for internal use only</em>
 </footer>
 
 <script>
@@ -1117,23 +1125,16 @@ new Chart(document.getElementById('cSalesRev'),{
     if(n<=9)return'#6B9ED0';
     return'#F5C400';
   }
-  // Green ramp for lead-visit days. Brighter = more leads.
-  function hmBgLead(nL){
-    if(nL<=1)return'#1a5c50';
-    if(nL<=2)return'#2D8C7A';
-    if(nL<=4)return'#4ade80';
-    return'#86efac';
+  // Lead-visit strip level (1-4) based on lead count. 0 = no strip.
+  function leadLvl(nL){
+    if(!nL) return 0;
+    if(nL<=1) return 1;
+    if(nL<=2) return 2;
+    if(nL<=4) return 3;
+    return 4;
   }
-  function hmFg(n,nL){
-    if(nL && nL>=3) return '#0D0D0B';
-    if(nL && nL>0)  return '#fff';
-    return n>=10?'#0D0D0B':'var(--color-text-secondary)';
-  }
-  function hmCntFg(n,nL){
-    if(nL && nL>=3) return '#0D2040';
-    if(nL && nL>0)  return '#fff';
-    return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');
-  }
+  function hmFg(n){return n>=10?'#0D0D0B':'var(--color-text-secondary)';}
+  function hmCntFg(n){return n>=10?'#0D2040':(n>0?'var(--color-text-primary)':'rgba(255,255,255,0.15)');}
   function pad2(v){return String(v).padStart(2,'0');}
   function isoWk(d){
     var dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
@@ -1171,16 +1172,19 @@ new Chart(document.getElementById('cSalesRev'),{
         var iso=yr+'-'+pad2(mo)+'-'+pad2(o.d);
         var n=DV[iso]||0;
         var nL=DL[iso]||0;
-        var fg=hmFg(n,nL);var cf=hmCntFg(n,nL);
-        // Lead-visit overlay wins over visit ramp. Otherwise use the blue→yellow
-        // visit ramp; if neither, leave bg to the .wk-a/.wk-b class.
-        var bg = nL>0 ? hmBgLead(nL) : (n===0 ? '' : hmBg(n));
-        var inline = bg ? ('background:'+bg) : '';
-        var isEmpty = (n===0 && nL===0);
-        var tipExtra = nL>0 ? (', '+nL+' to lead'+(nL!==1?'s':'')) : '';
+        var lvl=leadLvl(nL);
+        var fg=hmFg(n);var cf=hmCntFg(n);
+        // Cell background = visit ramp (existing). Lead activity shown as a
+        // thin green strip at the bottom — coexists with visit color so
+        // both signals are visible.
+        var inline=n===0?'':'background:'+hmBg(n);
+        var isEmpty=(n===0 && nL===0);
+        var stripHtml=lvl>0?('<div class="hm-lstrip lvl-'+lvl+'"></div>'):'';
+        var tipExtra=nL>0?(', '+nL+' to lead'+(nL!==1?'s':'')):'';
         html+='<div class="hm-cell'+(isEmpty?' empty':'')+'" style="'+inline+'" title="'+iso+': '+n+' visit'+(n!==1?'s':'')+tipExtra+'">'
              +'<div class="hm-date" style="color:'+fg+'">'+DNAMES[o.dow]+' '+pad2(o.d)+'</div>'
              +'<div class="hm-count" style="color:'+cf+'">'+(n||'')+'</div>'
+             +stripHtml
              +'</div>';
       });
       html+='</div>';
